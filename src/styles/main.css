@@ -1,0 +1,72 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Переменные */
+:root {
+  --color-accent: #d62828;
+  --color-gray: #ccc;
+  --color-bg: #fff;
+  --color-text: #222;
+
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --font-main: 'Arial', sans-serif;
+}
+
+/* Layout */
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  padding: var(--space-md);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Typography */
+h1, h2, h3 {
+  font-weight: bold;
+  margin-bottom: var(--space-sm);
+}
+
+p {
+  margin-bottom: var(--space-sm);
+}
+
+/* Global Elements */
+button {
+  padding: var(--space-sm);
+  border: none;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-accent);
+  color: white;
+  cursor: pointer;
+}
+
+input {
+  padding: var(--space-sm);
+  border: 1px solid var(--color-gray);
+  border-radius: var(--radius-sm);
+  width: 100%;
+  margin-bottom: var(--space-sm);
+}
+
+.card {
+  border: 2px solid var(--color-gray);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.active {
+  border-color: var(--color-accent);
+}
