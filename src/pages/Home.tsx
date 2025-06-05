@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { fetchEvents } from '../api/events';
 import { fetchActiveDonations } from '../api/donations';
 import BottomNav from '../components/BottomNav';   
+import ProfileMenu from '../components/ProfileMenu';
 import type { AxiosError } from 'axios'; 
+import { format } from 'date-fns';
 
 interface Event {
   id: number;
@@ -19,10 +22,11 @@ interface Donation {
 }
 
 const Home = () => {
-  const { user, logout } = useUser();
+  const { user } = useUser();
 
   const [events, setEvents] = useState<Event[]>([]);
   const [donations, setDonations] = useState<Donation[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,10 +60,10 @@ console.log('EVENTS:', events);
 
     <div className="home-container">
       {/* 🔝 Шапка */}
-      <header className="home-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Bakery Crew</h1>
-        <div title="Edit profile" style={{ fontSize: '1.8rem', cursor: 'pointer' }}>😊</div>
-      </header>
+    <header className="home-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <h1>Bakery Crew</h1>
+      <ProfileMenu />
+    </header>
 
       {/* 👤 Смена пользователя */}
       <section className="home-shift card">
@@ -73,9 +77,13 @@ console.log('EVENTS:', events);
           <p>No events</p>
         ) : (
           events.map((event) => (
-            <div key={event.id} className="card active">
+            <div 
+              key={event.id} 
+              className="card active clickable"
+              onClick={() => navigate(`/events/${event.id}`)}
+            >
               <h3>{event.title}</h3>
-              <p>{event.date} — Shift: {event.shift}</p>
+              <p>{format(new Date(event.date), 'd MMM yyyy')} — Shift: {event.shift}</p>
             </div>
           ))
         )}
@@ -87,9 +95,13 @@ console.log('EVENTS:', events);
           <p>No active donations</p>
         ) : (
           donations.map((donation) => (
-            <div key={donation.id} className="card active">
+            <div 
+              key={donation.id} 
+              className="card active clickable"
+              onClick={() => navigate(`/donations/${donation.id}`)}
+            >
               <h3>{donation.title}</h3>
-              <p>Deadline: {donation.deadline}</p>
+              <p>Deadline: {format(new Date(donation.deadline), 'd MMM yyyy')}</p>
             </div>
           ))
         )}
@@ -101,21 +113,6 @@ console.log('EVENTS:', events);
         <p>[Google Calendar here]</p>
       </section>
 
-      {/* 🔽 Нижнее меню (временно) */}
-      <nav style={{
-        display: 'flex',
-        justifyContent: 'space-around',
-        marginTop: '2rem',
-        borderTop: '1px solid var(--color-gray)',
-        paddingTop: '1rem'
-      }}>
-        <button>🏠</button>
-        <button>📅</button>
-        <button>🐷</button>
-        <button>💬</button>
-      </nav>
-
-      <button onClick={logout} style={{ marginTop: '1rem', width: '100%' }}>Logout</button>
       <BottomNav />
     </div>
   );

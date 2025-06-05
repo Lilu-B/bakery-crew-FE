@@ -1,18 +1,21 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../api/axios';   // используем наш кастомный экземпляр с интерсептором
+import camelcaseKeys from 'camelcase-keys';
 import { AxiosError } from 'axios';
 interface UserProviderProps { // Типизация пропсов для провайдера
   children: React.ReactNode;
 }
 
 // Тип пользователя
-interface User {
+export interface User {
   id: number;
   name: string;
   email: string;
   role: 'user' | 'manager' | 'developer';
   isApproved: boolean;
   shift?: '1st' | '2nd' | 'night';
+  phone?: string;
+  managerId?: number;
 }
 
 // Тип для самого контекста
@@ -45,14 +48,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       api.get('/protected')
         .then((res) => {
             if (isMounted) {
-                const raw = res.data;
-                const normalizedUser: User = {
-                ...raw,
-                isApproved: raw.is_approved, // преобразуем ключ - в этом объекте поле называется is_approved, а TypeScript (и твой интерфейс User) ожидает isApproved
-                };
-                setUser(normalizedUser);
+                const normalizedUser = camelcaseKeys(res.data, { deep: true });
+                setUser(normalizedUser as User);
             }
-            })
+        })
         .catch((err: AxiosError<{ message?: string }>) => {
           const message = err.response?.data?.message || 'Session expired. Please log in again.';
           console.error('❌ Auth error:', message);

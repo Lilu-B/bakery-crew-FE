@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import type { AxiosError } from 'axios';
+import camelcaseKeys from 'camelcase-keys';
 import { useUser } from '../context/UserContext';
+import type { User } from '../context/UserContext';
 
-const Login = () => {
+function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { setUser, user } = useUser();
+  const { user, setUser } = useUser();
   const navigate = useNavigate();
   const [loginInProgress, setLoginInProgress] = useState(false); // ⏳ статус входа
 
@@ -19,10 +21,7 @@ const Login = () => {
     }
     setLoginInProgress(true); // устанавливаем статус входа в процессе
 
-
-
-
-
+    // Проверяем, есть ли уже пользователь в контексте
     // Добавляем обработку ошибок с AxiosError
     try {
 console.log('🔐 Login handler triggered');
@@ -31,7 +30,8 @@ console.log('✅ Login success, token:', res.data.token);
 
       sessionStorage.setItem('token', res.data.token); // токен сохранится в sessionStorage
       const profile = await api.get('/protected');   // interceptor добавит токен автоматически из sessionStorage в api/axios.ts
-      setUser(profile.data);   // сохраняем в глобальный контекст
+      const normalizedUser = camelcaseKeys(profile.data, { deep: true });
+      setUser(normalizedUser as User);  // сохраняем в глобальный контекст
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;
       console.error('Login error:', error.response?.data || error.message);

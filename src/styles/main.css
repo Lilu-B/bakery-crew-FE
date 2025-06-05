@@ -70,3 +70,7 @@ input {
 .active {
   border-color: var(--color-accent);
 }
+
+.card.clickable {
+  cursor: pointer;
+}
