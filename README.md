@@ -10,8 +10,9 @@ Team members can view their shift, apply for overtime, contribute to donations, 
 - Vite + React + TypeScript
 - Clean CSS (no Tailwind, Bootstrap, or other frameworks)
 - React Router
-- Axios
-- camelcase-keys (for frontend response normalization)
+- Axios (with interceptors)
+- camelcase-keys (via Axios interceptor)
+- Date-fns (for date formatting)
 
 ---
 
@@ -28,14 +29,15 @@ npm install --save-dev @types/react-router-dom
 
 ```
 src/
-├── api/              # API requests to backend
-├── components/       # Reusable UI components (e.g. BottomNav)
+├── api/              # API requests to backend (events, donations, etc.)
+├── components/       # Reusable UI components (BottomNav, ProfileMenu)
 ├── context/          # Global user state (UserContext)
-├── pages/            # Pages (Login, Register, Home, Events...)
-├── routes/           # Protected routes
-├── styles/           # Main CSS file
-├── App.tsx
-├── main.tsx
+├── pages/            # Application views (Login, Register, Home, Events, EventDetails, etc.)
+├── routes/           # Route protection logic
+├── styles/           # Global and component-level CSS
+├── types/            # Shared TypeScript interfaces (Event, User, Donation)
+├── App.tsx           # App entry with route config
+├── main.tsx          # Vite mount point
 ```
 
 ---
@@ -51,11 +53,13 @@ src/
 - Token validation via `/api/protected`
 - camelCase normalization using `camelcase-keys`
 - Protected routes via `ProtectedRoute.tsx`
-- Visual error alerts with `AxiosError` handling
-- Manual logout via context/logout logic
+- Errors handled visually with `AxiosError` alert
+- Logout via ProfileMenu
+- User profile patch & delete available
 
 ### 👤 User Flow
-- Login & Register pages fully working
+- Register with shift → auto-assigned manager
+- Login with persistent session
 - Protected routes via `ProtectedRoute.tsx`
 - User context persists session info
 - Alerts shown on login/register failure
@@ -64,10 +68,8 @@ src/
 - Edit profile page with update & delete options
 
 ### 🏠 Home Page
-- Displays logged-in user's shift and role
-- Dynamically fetches:
-  - All events (`/api/events`)
-  - Active donations (`/api/donations/active`)
+- Shows user role & shift
+- Dynamic event and donation previews
 - Safe rendering with `Array.isArray()` checks
 - Placeholder calendar section
 - Fully styled mobile-friendly layout
@@ -80,9 +82,32 @@ src/
   - `/donations` — Active donations (in progress)
   - `/messages` — Messaging (in progress)
 
+### 📅 Events Page
+- Displays only **active** events
+- Role-based filtering:
+  - User: events of same shift or created by their manager
+  - Manager: events they created (same shift only)
+  - Developer: sees all events
+- Sort by event `date` (newest first)
+- `applied` field shows if user already signed up
+- ✅ Apply to event (`Apply`), or skip (`Not Now`)
+- 👀 View who has applied at the bottom of the details
+- 🗑 Managers & Developers can delete their events
+- ✏️ Event editing planned
+
 ---
 
 ## 🔁 Data Normalization
+
+### ✅ Now handled globally via Axios interceptor:
+
+```ts
+// api/axios.ts
+api.interceptors.response.use((response) => {
+  response.data = camelcaseKeys(response.data, { deep: true });
+  return response;
+});
+```
 
 - Installed [`camelcase-keys`](https://github.com/sindresorhus/camelcase-keys) to convert backend responses into frontend-friendly `camelCase` format.
 - Used in:
@@ -111,7 +136,7 @@ npm install
 npm run dev
 ```
 
-The app will be available at:  
+App runs at:  
 📱 http://localhost:5173
 
 ---
@@ -171,14 +196,29 @@ Connected to:
 
 ---
 
+## 🛠️ Recent Improvements
+
+- Axios interceptor now includes both token and camelCase handling
+- Response types are centralized in `src/types/` (`Event`, `User`, `Donation`)
+- Consistent camelCase handling across project
+- `fetchEvents()` returns applied state for users only
+- `/events/:eventId` implemented with role-based rendering:
+  - users can apply
+  - managers/admins can delete
+- Reorganized `api/events.ts` to separate logic & interface
+- Implemented strict TypeScript imports: `import type { Event } from ...`
+- Clean and maintainable file structure
+
+---
+
 ## 📌 Upcoming Features
 
-- Events: Apply, cancel, manager-only creation
-- Donations: Payment flow, optional participation
-- Messages: Direct messaging + manager approvals
-- Improved admin dashboard (approve users, assign roles)
-- Calendar sync with Google API
-- Accessibility (a11y) optimization
+- Google Calendar sync (after Apply)
+- Event editing form
+- Messages inbox & replies
+- Donation confirmation & payment flow
+- Role-based admin dashboard
+- A11y improvements for keyboard navigation & screen readers
 
 ---
 
@@ -186,3 +226,42 @@ Connected to:
 
 This project connects to the backend repository:  
 https://github.com/Lilu-B/bakery-crew-BE
+
+----------------------------------------------------------------
+----------------------------------------------------------------
+----------------------------------------------------------------
+
+Техническое задание (Minimum Viable Product - MVP)
+
+Обязательная функциональность:
+	1.	Отображение списка событий (овертаймов) для обзора
+	2.	Возможность для пользователей откликаться на события
+	3.	Возможность добавления событий в Google Calendar после отклика
+	4.	Возможность для сотрудников (менеджеров) войти в систему и создавать/управлять событиями
+
+⸻
+
+Технологии:
+	•	React / React Native для фронтенда
+	•	TypeScript добровольно, как новый вызов
+	•	Google Calendar API для интеграции
+	•	Node.js/БЭКЕНД: принципы безопасной аутентификации
+
+⸻
+
+UI-Требования:
+	•	Респонсив дизайн для разных размеров экрана
+	•	Аксессибилити: поддержка считывателей экрана, навигации с клавиатуры
+	•	Очевидные состояния загрузки и ошибки для пользователей
+	•	Интуитивный интерфейс: просмотр, отклик, создание событий
+
+⸻
+
+Требования к сдаче проекта:
+	1.	Хостинг и открытый доступ к проекту (web или mobile)
+	2.	README содержит:
+	•	Обзор проекта
+	•	Добровольно: ссылка на видеообзор
+	•	Данные для тестового входа
+	•	Инструкция для local-запуска проекта
+	3.	Обязательное выполнение всех MVP-пунктов

@@ -6,20 +6,10 @@ import { fetchActiveDonations } from '../api/donations';
 import BottomNav from '../components/BottomNav';   
 import ProfileMenu from '../components/ProfileMenu';
 import type { AxiosError } from 'axios'; 
+import type { Event } from '../types/event';
+import type { Donation } from '../types/donation';
 import { format } from 'date-fns';
 
-interface Event {
-  id: number;
-  title: string;
-  date: string;
-  shift: string;
-}
-
-interface Donation {
-  id: number;
-  title: string;
-  deadline: string;
-}
 
 const Home = () => {
   const { user } = useUser();

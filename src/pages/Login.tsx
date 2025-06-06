@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import type { AxiosError } from 'axios';
-import camelcaseKeys from 'camelcase-keys';
 import { useUser } from '../context/UserContext';
 import type { User } from '../context/UserContext';
 
@@ -30,7 +29,7 @@ console.log('✅ Login success, token:', res.data.token);
 
       sessionStorage.setItem('token', res.data.token); // токен сохранится в sessionStorage
       const profile = await api.get('/protected');   // interceptor добавит токен автоматически из sessionStorage в api/axios.ts
-      const normalizedUser = camelcaseKeys(profile.data, { deep: true });
+      const normalizedUser = profile.data;
       setUser(normalizedUser as User);  // сохраняем в глобальный контекст
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;

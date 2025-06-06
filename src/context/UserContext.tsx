@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../api/axios';   // используем наш кастомный экземпляр с интерсептором
-import camelcaseKeys from 'camelcase-keys';
 import { AxiosError } from 'axios';
 interface UserProviderProps { // Типизация пропсов для провайдера
   children: React.ReactNode;
@@ -47,10 +46,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     if (token && !user) {
       api.get('/protected')
         .then((res) => {
-            if (isMounted) {
-                const normalizedUser = camelcaseKeys(res.data, { deep: true });
-                setUser(normalizedUser as User);
-            }
+        if (isMounted) {
+            setUser(res.data as User); // данные уже camelCase
+        }
         })
         .catch((err: AxiosError<{ message?: string }>) => {
           const message = err.response?.data?.message || 'Session expired. Please log in again.';

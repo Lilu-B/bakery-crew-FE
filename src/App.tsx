@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import Profile from './pages/Profile';
 import Home from './pages/Home';
 import Events from './pages/Events';
+import EventDetails from './pages/EventDetails';
 import Donations from './pages/Donations';
 import Messages from './pages/Messages';
 import ProtectedRoute from './routes/ProtectedRoute';
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/events" element={<ProtectedRoute><Events /></ProtectedRoute>} />
+        <Route path="/events/:eventId" element={<ProtectedRoute><EventDetails /></ProtectedRoute>} />
         <Route path="/donations" element={<ProtectedRoute><Donations /></ProtectedRoute>} />
         <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
       </Routes>
