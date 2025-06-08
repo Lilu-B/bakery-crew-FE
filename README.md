@@ -21,6 +21,7 @@ Team members can view their shift, apply for overtime, contribute to donations, 
 ```bash
 npm install axios react-router-dom classnames
 npm install --save-dev @types/react-router-dom
+npm install react-calendar
 ```
 
 ---
@@ -34,7 +35,7 @@ src/
 ├── context/          # Global user state (UserContext)
 ├── pages/            # Application views (Login, Register, Home, Events, EventDetails, etc.)
 ├── routes/           # Route protection logic
-├── styles/           # Global and component-level CSS
+├── styles/           # Global and component-level CSS (including calendar)
 ├── types/            # Shared TypeScript interfaces (Event, User, Donation)
 ├── App.tsx           # App entry with route config
 ├── main.tsx          # Vite mount point
@@ -85,6 +86,32 @@ src/
   - `/events` — Overtime event list (in progress)
   - `/donations` — Active donations (in progress)
   - `/messages` — Messaging (in progress)
+
+### 🔗 Google Calendar Export
+
+- After applying to an event, users can click **"Add to Google Calendar"**
+- Opens Google Calendar pre-filled with:
+  - Title
+  - Date (single-day range)
+  - Optional description
+- Implemented via dynamic link with `window.open(...)`
+- Only shown if the user has successfully applied to the event
+- Reusable `<AddToGoogleCalendar />` component placed:
+  - Inside `EventDetails.tsx`
+  - Under calendar event list (optional)
+
+### 📅 Calendar Integration
+
+- React Calendar (`react-calendar`) shows user's upcoming applied events
+- Visual dots mark dates with relevant events
+- Calendar auto-filters:
+  - Users: see only events they've applied to
+  - Managers: see all events for their shift
+  - Developers: see all events
+- Weekends styled in red, today and selected date are highlighted
+- Points displayed using `.dot` indicator and `tileContent`
+- Navigation buttons and month label styled manually for accessibility
+- Upcoming event list appears under selected date
 
 ### 🗕 Events Feature
 - `/events` displays only **active** events
@@ -231,6 +258,13 @@ Connected to:
   - Centralized in `src/types/`
   - Events, Users, Donations typed strictly
 - 🛠️ GitHub commits structured by feature for clarity
+- 📆 CalendarView component implemented with:
+  - Role-based filtering (applied-only for users)
+  - Dot markers for events
+  - Date selection state and event list per day
+- 📤 Google Calendar export button added post-application (event details only)
+- 🖌️ Styled weekends, current day, selected day, and header for readability
+- ♿ Improved accessibility: visible date text, proper hover/focus states
 - 📄 README maintained and expanded at each stage
 
 ---
