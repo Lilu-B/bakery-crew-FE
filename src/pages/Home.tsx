@@ -5,25 +5,32 @@ import { fetchEvents } from '../api/events';
 import { fetchActiveDonations } from '../api/donations';
 import BottomNav from '../components/BottomNav';   
 import ProfileMenu from '../components/ProfileMenu';
+import { format } from 'date-fns';
 import type { AxiosError } from 'axios'; 
 import type { Event } from '../types/event';
 import type { Donation } from '../types/donation';
-import { format } from 'date-fns';
 
 
 const Home = () => {
   const { user } = useUser();
-
+  const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
   const [donations, setDonations] = useState<Donation[]>([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
         try {
         const eventsData = await fetchEvents();
+        // Получаем активные донаты
+        // Если пользователь — менеджер, то фильтруем события по смене
+        if (user?.role === 'manager' || user?.role === 'user') {
+          const filteredEvents = eventsData.filter((event) => event.shift === user.shift);
+          setEvents(filteredEvents);
+        } else {
+          setEvents(eventsData);
+        }
+
         const donationsData = await fetchActiveDonations();
-        setEvents(eventsData);
         setDonations(donationsData);
         } catch (err) {
             const error = err as AxiosError<{ message?: string }>;
@@ -36,9 +43,7 @@ const Home = () => {
         }
     };
     fetchData();
-    }, []);
-
-console.log('EVENTS:', events); 
+    }, [user]);
 
   return (
     // <div>
@@ -66,16 +71,21 @@ console.log('EVENTS:', events);
         {!Array.isArray(events) || events.length === 0 ? (
           <p>No events</p>
         ) : (
-          events.map((event) => (
-            <div 
-              key={event.id} 
-              className="card active clickable"
-              onClick={() => navigate(`/events/${event.id}`)}
-            >
-              <h3>{event.title}</h3>
-              <p>{format(new Date(event.date), 'd MMM yyyy')} — Shift: {event.shift}</p>
-            </div>
-          ))
+          events.map((event) => {
+            const cardClass =
+              event.applied === false ? 'card active clickable' : 'card clickable';
+
+            return (
+              <div 
+                key={event.id} 
+                className={cardClass}
+                onClick={() => navigate(`/events/${event.id}`)}
+              >
+                <h3>{event.title}</h3>
+                <p>{format(new Date(event.date), 'd MMM yyyy')} — Shift: {event.shift}</p>
+              </div>
+            );
+          })
         )}
       </section>
 
@@ -96,6 +106,27 @@ console.log('EVENTS:', events);
           ))
         )}
       </section>
+      {/* <section>
+        {!Array.isArray(donations) || donations.length === 0 ? (
+          <p>No active donations</p>
+        ) : (
+          donations.map((donation) => {
+            const cardClass =
+              donation.applied === false ? 'card active clickable' : 'card clickable';
+
+            return (
+              <div
+                key={donation.id}
+                className={cardClass}
+                onClick={() => navigate(`/donations/${donation.id}`)}
+              >
+                <h3>{donation.title}</h3>
+                <p>Deadline: {format(new Date(donation.deadline), 'd MMM yyyy')}</p>
+              </div>
+            );
+          })
+        )}
+      </section> */}
 
       {/* 🗓 Календарь-заглушка */}
       <section className="card calendar-placeholder" style={{ textAlign: 'center', background: '#eee' }}>

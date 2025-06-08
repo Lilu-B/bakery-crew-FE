@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { fetchEvents } from '../api/events';
-import { useUser } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
+import { fetchEvents } from '../api/events';
 import BottomNav from '../components/BottomNav';
 import ProfileMenu from '../components/ProfileMenu';
 import { format } from 'date-fns';
@@ -29,7 +29,7 @@ const Events = () => {
         } else if (user.role === 'manager') {
           filteredEvents = allEvents.filter(
             (event: Event) =>
-              event.createdBy === user.id && event.shift === user.shift
+              event.shift === user.shift
           );
         } else {
           // user — события своей смены или от его менеджера

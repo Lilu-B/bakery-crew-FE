@@ -71,6 +71,10 @@ src/
 - Shows user role & shift
 - Dynamic event and donation previews
 - Safe rendering with `Array.isArray()` checks
+- Events filtered by role:
+  - Users: see only events of their shift
+  - Managers: see only events of their shift
+  - Developers (admins): see all events
 - Placeholder calendar section
 - Fully styled mobile-friendly layout
 - Dynamic bottom navigation bar
@@ -82,18 +86,24 @@ src/
   - `/donations` — Active donations (in progress)
   - `/messages` — Messaging (in progress)
 
-### 📅 Events Page
-- Displays only **active** events
-- Role-based filtering:
-  - User: events of same shift or created by their manager
-  - Manager: events they created (same shift only)
-  - Developer: sees all events
-- Sort by event `date` (newest first)
-- `applied` field shows if user already signed up
-- ✅ Apply to event (`Apply`), or skip (`Not Now`)
-- 👀 View who has applied at the bottom of the details
-- 🗑 Managers & Developers can delete their events
-- ✏️ Event editing planned
+### 🗕 Events Feature
+- `/events` displays only **active** events
+- `/events/:eventId` shows full event info
+- Role-based logic:
+  - Users can apply if event is from their shift
+  - Managers can delete events from their shift or if they created them
+  - Admins can delete any event
+- `/events/create`:
+  - Admins can create events for any shift
+  - Managers can only create events for their own shift
+  - Title is user-defined
+  - Date picker with ISO validation
+  - Description field (optional)
+- User-submitted applications are shown per event
+- `applied` status shown for current user
+- Dynamic event styling:
+  - Gray if user applied
+  - Red if not applied
 
 ---
 
@@ -167,32 +177,61 @@ Connected to:
   - `PATCH /api/users/me`
   - `DELETE /api/users/:id`
   - `GET /api/events`
+  - `POST /api/events`
+  - `GET /api/events/:eventId`
+  - `POST /api/events/:eventId/apply`
+  - `GET /api/events/:eventId/applicants`
+  - `DELETE /api/events/:eventId`
   - `GET /api/donations/active`
 
 ---
 
 ## 🛠️ Work Done So Far
 
-- Project initialized using `Vite + React + TypeScript`
-- Clean folder structure set up
-- `axios.ts` configured with interceptor
-- `vite.config.ts` set with dev proxy
-- camelcase-keys installed for frontend normalization
-- `UserContext.tsx` created to manage auth state, auto-auth on refresh, and logout on token failure
-- `ProtectedRoute.tsx` guards private routes
-- Login and Register pages implemented with error feedback
-- Registration enforces required shift
-- Auto-assign manager based on shift during registration
-- All login/logout/token logic completed and tested
-- Dynamic data fetching using `useEffect` with error handling
-- Normalized backend responses to support camelCase props
-- Home page fully working with live data (events & donations)
-- Real-time test users and data created in PostgreSQL backend
-- Admin login and role-specific routing/debugging implemented
-- Legacy users updated to reflect assigned managers
-- Fallback handling added for empty events/donations
-- Error messages using `AxiosError` for both login/register
-- README maintained throughout
+- ✅ Project initialized with `Vite + React + TypeScript`
+- 📁 Clean, modular folder structure established
+- 🔐 Full JWT authentication:
+  - `axios.ts` configured with interceptor for token + camelCase normalization
+  - Token persisted in `sessionStorage` and auto-attached via Axios
+  - Auto-login on refresh via `/api/protected` in `UserContext.tsx`
+  - Logout resets auth context
+- ⚙️ `vite.config.ts` set with proxy for `/api` to `localhost:3001`
+- 🔤 `camelcase-keys` installed for response normalization from backend
+- 🧠 `UserContext.tsx` handles auth state globally
+- 🔒 `ProtectedRoute.tsx` used for route guarding
+- 👥 Login, Register, and Profile pages fully functional with:
+  - Error handling via `AxiosError`
+  - Shift-based registration
+  - Auto-assignment of manager during signup
+  - Profile edit & delete support
+- 🏠 Home page:
+  - Displays role, shift, upcoming events and donations
+  - Role-based event filtering (manager sees own shift only)
+  - Placeholder for Google Calendar sync
+- 📅 Events feature fully implemented:
+  - `/events` page shows all **active** events
+  - Events filtered based on role (user/manager/developer)
+  - `EventDetails` page:
+    - Users can apply or skip
+    - Shows applied status and applicants
+    - Managers/Developers can delete
+  - Create event form (`EventCreate.tsx`):
+    - Inputs: title, date picker, shift, optional description
+    - Validates fields before submission
+    - Manager can create only for their shift (enforced front & back)
+    - Developer can create for any shift
+- 💰 Active donations:
+  - `/donations` page integrated (view only for now)
+  - Styled consistently with events
+- 🧪 Robust error handling and fallback UI:
+  - Try/catch in all fetchers
+  - Alerts shown on failure
+  - Empty array fallback for lists
+- 🧼 Cleaned up interfaces and types:
+  - Centralized in `src/types/`
+  - Events, Users, Donations typed strictly
+- 🛠️ GitHub commits structured by feature for clarity
+- 📄 README maintained and expanded at each stage
 
 ---
 
@@ -214,7 +253,6 @@ Connected to:
 ## 📌 Upcoming Features
 
 - Google Calendar sync (after Apply)
-- Event editing form
 - Messages inbox & replies
 - Donation confirmation & payment flow
 - Role-based admin dashboard

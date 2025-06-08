@@ -1,135 +1,155 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import type { AxiosError } from 'axios';
-import { format } from 'date-fns';
-
-import api from '../api/axios'; 
+import { fetchEventById, applyToEvent, deleteEvent } from '../api/events';
 import { useUser } from '../context/UserContext';
-import ProfileMenu from '../components/ProfileMenu';
 import BottomNav from '../components/BottomNav';
+import ProfileMenu from '../components/ProfileMenu';
+import { format } from 'date-fns';
+import type { Event } from '../types/event';
+import type { Applicant } from '../types/user';
+import type { AxiosError } from 'axios';
+import api from '../api/axios';
 
-interface Event {
-  id: number;
-  title: string;
-  date: string;
-  shift: '1st' | '2nd' | 'night';
-  managerId: number;
-  description?: string;
-  applicants: string[];
-}
 
 const EventDetails = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const { eventId } = useParams<{ eventId: string }>();
   const { user } = useUser();
-
+  const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
   const [event, setEvent] = useState<Event | null>(null);
+  const [applicants, setApplicants] = useState<Applicant[]>([]);
+  const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [applied, setApplied] = useState(false);
+
+  
+  // ✅ Безопасно преобразуем в число один раз
+  const id = Number(eventId);
+  // ✅ Защита: если параметр не передан — возвращаем ошибку
+  const isInvalid = !eventId || isNaN(id); 
 
   useEffect(() => {
+      if (isInvalid) {
+            setError('Event not found');
+            navigate('/events');
+            return; 
+        }
+   
+    // Загружаем данные события по ID
+    // Используем async/await для асинхронной загрузки
+
     const loadEvent = async () => {
       try {
-        const res = await api.get(`/events/${id}`);
-        const data = res.data as Event;
-        setEvent(data);
+        const res = await fetchEventById(id);
+        setEvent(res);
+        if (res.applied) setSubmitted(true);
 
-        if (data.applicants.includes(user?.name || '')) {
-          setApplied(true);
-        }
+        // 👥 Загружаем подписавшихся
+        const applicantsRes = await api.get(`/events/${eventId}/applicants`);
+        setApplicants(applicantsRes.data.applicants || []);
       } catch (err) {
-        const axiosError = err as AxiosError<{ msg?: string }>;
-        setError(axiosError.response?.data?.msg || 'Failed to load event.');
+        const error = err as AxiosError<{ message?: string }>;
+        alert(error.response?.data?.message || 'Error loading event');
       } finally {
         setLoading(false);
       }
     };
 
     loadEvent();
-  }, [id, user]);
+  }, [isInvalid, navigate]);
 
-  const handleApply = async () => {
+  if (isInvalid || error) return null;
+
+
+    const handleApply = async () => {
     try {
-      await api.post(`/events/${id}/apply`);
-      setApplied(true);
+        const { msg } = await applyToEvent(id); // уже типизировано и обёрнуто
+        alert(msg); // Показываем "Application submitted" - Можно заменить на toast
+        // ✅ Обновляем статус
+        setSubmitted(true);
+        // ✅ Обновляем список участников (без перезагрузки)
+        const res = await api.get(`/events/${id}/applicants`);
+        setApplicants(res.data.applicants || []);
     } catch (err) {
-      const axiosError = err as AxiosError<{ msg?: string }>;
-      alert(axiosError.response?.data?.msg || 'Could not apply to this event.');
+        const error = err as AxiosError<{ msg?: string }>;
+        alert(error.response?.data?.msg || '❌ Failed to apply');
     }
-  };
+    };
 
-  const handleNotNow = () => {
-    navigate('/events');
-  };
+  const handleNotNow = () => navigate('/events');
 
-  const handleDelete = async () => {
-    const confirm = window.confirm('Are you sure you want to delete this event?');
-    if (!confirm) return;
+    const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete this event?')) return;
+
     try {
-      await api.delete(`/events/${id}`);
-      navigate('/events');
+        const { msg } = await deleteEvent(id); // вызываем нашу typed функцию
+        alert(msg); // Показываем "Event deleted"
+        navigate('/events'); // Перенаправляем на список
     } catch (err) {
-      const axiosError = err as AxiosError<{ msg?: string }>;
-      alert(axiosError.response?.data?.msg || 'Failed to delete event.');
+        const error = err as AxiosError<{ msg?: string }>;
+        alert(error.response?.data?.msg || '❌ Failed to delete');
     }
-  };
+    };
 
-  const isUser = user?.role === 'user';
-  const isManager = user?.role === 'manager' && user.id === event?.managerId;
-  const isAdmin = user?.role === 'developer';
-
-  const canApply = isUser && event?.shift === user.shift;
-
-  if (loading) return <p>Loading event details...</p>;
-  if (error || !event) return <p style={{ color: 'red' }}>{error || 'Event not found'}</p>;
+  if (loading || !event) return <p>Loading...</p>;
 
   return (
-    <div className="home-container">
-      <header className="home-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Bakery Crew</h1>
+    <div className="event-details">
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1>Bakery Crew Hub</h1>
         <ProfileMenu />
       </header>
 
-      <div style={{ padding: '1rem' }}>
-        <h2>{event.title}</h2>
-        <p style={{ marginBottom: '0.5rem' }}>
-          <strong>{format(new Date(event.date), 'd MMM yyyy')}</strong> — Shift: {event.shift}
+        {error && (
+        <div
+            role="alert"
+            aria-live="assertive"
+            style={{ color: 'red', marginTop: '1rem' }}
+        >
+            {error}
+        </div>
+        )}
+
+      <h2>{event.title}</h2>
+      <p>
+        <strong>{format(new Date(event.date), 'EEEE')}</strong> — {event.shift} Shift
+      </p>
+
+      {user?.role === 'user' && !submitted && (
+        <div style={{ display: 'flex', gap: '1rem', margin: '1rem 0' }}>
+          <button onClick={handleApply} style={{ background: 'green' }}>Apply</button>
+          <button onClick={handleNotNow} style={{ background: 'tomato' }}>Not Now</button>
+        </div>
+      )}
+
+      {submitted && (
+        <p style={{ color: 'green', marginTop: '1rem' }}>
+          Your Shift Request Was Submitted!
         </p>
+      )}
 
-        {event.description && <p>{event.description}</p>}
-
-        {/* 🔘 Кнопки только для сотрудника со своей сменой */}
-        {canApply && (
-          <>
-            {!applied ? (
-              <>
-                <button onClick={handleApply} style={{ marginRight: '10px' }}>Apply</button>
-                <button onClick={handleNotNow}>Not now</button>
-              </>
-            ) : (
-              <p style={{ color: 'green' }}>✅ You have successfully applied</p>
-            )}
-          </>
-        )}
-
-        {/* 🔘 Удаление для менеджера или админа */}
-        {(isManager || isAdmin) && (
-          <button
-            onClick={handleDelete}
-            style={{ background: 'red', color: 'white', marginTop: '1rem' }}
-          >
-            Delete Event
+      {user?.role !== 'user' && (
+        <div style={{ textAlign: 'right' }}>
+          <button onClick={handleDelete} style={{ background: 'tomato' }}>
+            DELETE
           </button>
-        )}
+        </div>
+      )}
 
-        <h4 style={{ marginTop: '1rem' }}>Who applied:</h4>
+      <section style={{ marginTop: '2rem' }}>
+        <p><strong>Hi everyone,</strong></p>
+        <p>{event.description || 'No description provided.'}</p>
+      </section>
+
+      <section style={{ marginTop: '2rem' }}>
+        <p><strong>Who applied</strong></p>
         <ul>
-          {event.applicants.map((name, idx) => (
-            <li key={idx}>{name}</li>
-          ))}
+          {applicants.length === 0 ? (
+            <li>No applicants yet.</li>
+          ) : (
+            applicants.map((a) => <li key={a.id}>{a.name}</li>)
+          )}
         </ul>
-      </div>
+      </section>
 
       <BottomNav />
     </div>
