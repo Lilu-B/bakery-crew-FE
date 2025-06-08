@@ -5,6 +5,7 @@ import { fetchEvents } from '../api/events';
 import { fetchActiveDonations } from '../api/donations';
 import BottomNav from '../components/BottomNav';   
 import ProfileMenu from '../components/ProfileMenu';
+import CalendarView from '../components/CalendarView';
 import { format } from 'date-fns';
 import type { AxiosError } from 'axios'; 
 import type { Event } from '../types/event';
@@ -131,7 +132,7 @@ const Home = () => {
       {/* 🗓 Календарь-заглушка */}
       <section className="card calendar-placeholder" style={{ textAlign: 'center', background: '#eee' }}>
         <h3>Upcoming Events</h3>
-        <p>[Google Calendar here]</p>
+        <CalendarView events={events} />
       </section>
 
       <BottomNav />

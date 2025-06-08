@@ -12,3 +12,7 @@ export interface Event {
   creatorName: string;
   applied?: boolean; // только для пользователей (user)
 }
+
+export interface CalendarViewProps {
+  events: Event[];
+}

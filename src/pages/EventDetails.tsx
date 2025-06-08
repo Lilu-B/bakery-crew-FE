@@ -4,6 +4,7 @@ import { fetchEventById, applyToEvent, deleteEvent } from '../api/events';
 import { useUser } from '../context/UserContext';
 import BottomNav from '../components/BottomNav';
 import ProfileMenu from '../components/ProfileMenu';
+import AddToGoogleCalendar from '../components/AddToGoogleCalendar';
 import { format } from 'date-fns';
 import type { Event } from '../types/event';
 import type { Applicant } from '../types/user';
@@ -122,10 +123,17 @@ const EventDetails = () => {
       )}
 
       {submitted && (
-        <p style={{ color: 'green', marginTop: '1rem' }}>
-          Your Shift Request Was Submitted!
-        </p>
-      )}
+        <>
+          <p style={{ color: 'green', marginTop: '1rem' }}>
+            Your Shift Request Was Submitted!
+          </p>
+          <AddToGoogleCalendar
+            title={event.title}
+            date={event.date}
+            description={event.description || ''}
+          />
+        </>
+          )}
 
       {user?.role !== 'user' && (
         <div style={{ textAlign: 'right' }}>

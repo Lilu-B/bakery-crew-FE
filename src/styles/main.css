@@ -74,3 +74,66 @@ input {
 .card.clickable {
   cursor: pointer;
 }
+
+.event-details ul {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.dot {
+  height: 8px;
+  width: 8px;
+  background-color: #47d785;
+  border-radius: 50%;
+  margin: 0 auto;
+  margin-top: 2px;
+}
+
+.react-calendar__tile {
+  color: #333; /* обычный тёмный цвет */
+}
+
+.react-calendar__tile:disabled {
+  color: #ccc; /* для дней вне месяца */
+}
+
+.react-calendar__tile--now {
+  background: #c6ded1 !important;
+  font-weight: bold;
+}
+
+.react-calendar__tile--active {
+  background: #e0e0e0 !important;
+  color: white !important;
+}
+
+.weekend {
+  color: #ef2a2a !important; /* красный */
+  font-weight: bold;
+}
+
+/* 🌟 Панель навигации */
+.react-calendar__navigation {
+  background: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+/* 🌟 Кнопки навигации: < > */
+.react-calendar__navigation button {
+  color: #333 !important;        /* тёмный цвет текста */
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* 🗓 Название месяца */
+.react-calendar__navigation__label {
+  color: #333 !important;        /* тёмный текст */
+  font-weight: bold;
+  font-size: 1.1rem;
+}
