@@ -2,7 +2,8 @@ import axios from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 
 const api = axios.create({
-  baseURL: 'https://bakery-crew-be.onrender.com/api' ,    // это проксируется на http://localhost:3001/api из vite.config.ts
+  baseURL: 'https://bakery-crew-be.onrender.com/api',
+  withCredentials: true,    // это проксируется на http://localhost:3001/api из vite.config.ts
 //   baseURL: import.meta.env.VITE_API_URL || '/api'   // Для продакшена позже можно будет сделать
 });
 
