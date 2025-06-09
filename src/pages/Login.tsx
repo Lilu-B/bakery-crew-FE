@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import api from '../api/axios';
 import type { AxiosError } from 'axios';
 import { useUser } from '../context/UserContext';
@@ -72,6 +72,9 @@ console.log('✅ Login success, token:', res.data.token);
       <button type="submit" disabled={loginInProgress}>
         {loginInProgress ? 'Logging in...' : 'Login'}
       </button>
+            <p style={{ marginTop: '1rem' }}>
+        Don't have an account? <Link to="/register">Register</Link>
+      </p>
     </form>
   );
 };

@@ -22,6 +22,7 @@ Team members can view their shift, apply for overtime, contribute to donations, 
 npm install axios react-router-dom classnames
 npm install --save-dev @types/react-router-dom
 npm install react-calendar
+npm install camelcase-keys
 ```
 
 ---
@@ -132,6 +133,35 @@ src/
   - Gray if user applied
   - Red if not applied
 
+### 🎁 Donations Feature
+
+- `/donations` — displays all **active** donation campaigns
+- `/donations/:donationId` — shows full donation details:
+  - Title, deadline, description, total collected, donor count
+  - This info is visible to **all** roles (users, managers, developers)
+- Donation status `hasDonated` is respected:
+  - Users **cannot donate twice**
+  - After donation, a thank-you message is shown ✅
+- Users (`user`) can enter an amount and confirm their donation
+- Managers and developers can delete donations they created (or any if admin)
+- `/donations/create`:
+  - Available to managers and developers
+  - Inputs: title, deadline, optional description
+- Users can donate **only once per donation**
+- All data is processed through `camelcase-keys` interceptor and Axios
+
+### 🎫 User Management Feature
+
+- Unapproved users are now handled by managers and developers
+- Backend route: `GET /api/admin/users/pending` returns all unapproved users
+- Managers see only pending users from their own shift
+- Developers see all pending users
+- Each pending user card displays:
+  - Name, Email, Shift, Role, Phone
+  - “Approve” (✅ PATCH `/api/admin/users/:id/approve`)
+  - “Delete” (🗑 DELETE `/api/users/:id`)
+- Styled red border to highlight pending users (`.card.pending`)
+
 ---
 
 ## 🔁 Data Normalization
@@ -210,6 +240,12 @@ Connected to:
   - `GET /api/events/:eventId/applicants`
   - `DELETE /api/events/:eventId`
   - `GET /api/donations/active`
+  - `POST /api/donations`
+  - `GET /api/donations/:donationId`
+  - `POST /api/donations/:donationId/confirm-payment`
+  - `DELETE /api/donations/:donationId`
+  - `GET /api/admin/users/pending`
+  - `PATCH /api/admin/users/:id/approve`
 
 ---
 
@@ -286,9 +322,8 @@ Connected to:
 
 ## 📌 Upcoming Features
 
-- Google Calendar sync (after Apply)
-- Messages inbox & replies
-- Donation confirmation & payment flow
+- Messages inbox & replies (feature UI hidden for now, planned soon)
+- Donation confirmation & payment flow - Stripe integration for real donation
 - Role-based admin dashboard
 - A11y improvements for keyboard navigation & screen readers
 

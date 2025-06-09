@@ -96,7 +96,7 @@ const Events = () => {
           onClick={() => navigate('/events/create')}
           style={{
             marginTop: '1rem',
-            background: 'lightgreen',
+            background: '#47d785',
             padding: '1rem',
             borderRadius: '8px',
             width: '100%',

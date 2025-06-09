@@ -8,7 +8,9 @@ import Events from './pages/Events';
 import EventDetails from './pages/EventDetails';
 import EventCreate from './pages/EventCreate';
 import Donations from './pages/Donations';
-import Messages from './pages/Messages';
+import DonationDetails from './pages/DonationDetails';
+import DonationCreate from './pages/DonationCreate';
+// import Messages from './pages/Messages';
 import ProtectedRoute from './routes/ProtectedRoute';
 
 const App = () => {
@@ -27,7 +29,9 @@ const App = () => {
         
         {/* Остальные защищённые страницы */}
         <Route path="/donations" element={<ProtectedRoute><Donations /></ProtectedRoute>} />
-        <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
+        <Route path="/donations/:donationId" element={<ProtectedRoute><DonationDetails /></ProtectedRoute>} />
+        <Route path="/donations/create" element={<ProtectedRoute><DonationCreate /></ProtectedRoute>} />
+        {/* <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} /> */}
       </Routes>
     </Router>
   );

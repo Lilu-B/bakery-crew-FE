@@ -11,7 +11,7 @@ export interface Donation {
   creatorName: string;
 
   // 👇 эти поля приходят только в некоторых запросах (например, getDonationById)
-  total_collected?: number;
-  donor_count?: number;
-  has_donated?: boolean;
+  totalCollected?: number;
+  donorCount?: number;
+  hasDonated?: boolean;
 }

@@ -18,3 +18,10 @@ export interface Applicant {
   name: string;
   shift: '1st' | '2nd' | 'night';
 }
+
+// Минимальная информация о доноре (для деталей сборов)
+export interface Donor {
+  id: number;
+  name: string;
+  amount: number;
+}

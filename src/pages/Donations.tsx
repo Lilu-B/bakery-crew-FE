@@ -37,26 +37,33 @@ const Donations = () => {
   return (
     <div className="donations-page">
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Holiday Donations</h1>
+        <h1>Bakery Crew Hub</h1>
         <ProfileMenu />
+        {/* <h1>Holiday Donations</h1> */}
       </header>
 
       {donations.length === 0 ? (
         <p>No active donations</p>
       ) : (
-        donations.map((donation) => (
-          <div
-            key={donation.id}
-            className="card clickable"
-            onClick={() => navigate(`/donations/${donation.id}`)}  // переход на детальную страницу
-          >
-            <h3>{donation.title}</h3>
-            <p>Deadline: {format(new Date(donation.deadline), 'd MMM yyyy')}</p>
-            <p style={{ fontSize: '0.85rem', color: '#666' }}>
-              Created by: {donation.creatorName}
-            </p>
-          </div>
-        ))
+        donations.map((donation) => {
+          // 🔴 если не донатил — красная рамка, иначе — серая
+          const cardClass =
+            donation.hasDonated === false ? 'card active clickable' : 'card clickable';
+
+          return (
+            <div
+              key={donation.id}
+              className={cardClass}
+              onClick={() => navigate(`/donations/${donation.id}`)}
+            >
+              <h3>{donation.title}</h3>
+              <p>Deadline: {format(new Date(donation.deadline), 'd MMM yyyy')}</p>
+              <p style={{ fontSize: '0.85rem', color: '#666' }}>
+                Created by: {donation.creatorName}
+              </p>
+            </div>
+          );
+        })
       )}
 
       {/* Только для менеджеров и админов отображаем кнопку создания */}
@@ -65,7 +72,7 @@ const Donations = () => {
           onClick={() => navigate('/donations/create')}
           style={{
             marginTop: '1rem',
-            background: 'lightblue',
+            background: '#47d785',
             padding: '1rem',
             borderRadius: '8px',
             width: '100%',

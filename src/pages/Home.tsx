@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { fetchEvents } from '../api/events';
-import { fetchActiveDonations } from '../api/donations';
+import { fetchAllDonations } from '../api/donations';
 import BottomNav from '../components/BottomNav';   
 import ProfileMenu from '../components/ProfileMenu';
 import CalendarView from '../components/CalendarView';
+import PendingUserCards from '../components/PendingUserCards';
 import { format } from 'date-fns';
 import type { AxiosError } from 'axios'; 
 import type { Event } from '../types/event';
@@ -31,7 +32,7 @@ const Home = () => {
           setEvents(eventsData);
         }
 
-        const donationsData = await fetchActiveDonations();
+        const donationsData = await fetchAllDonations();
         setDonations(donationsData);
         } catch (err) {
             const error = err as AxiosError<{ message?: string }>;
@@ -56,19 +57,28 @@ const Home = () => {
 
     <div className="home-container">
       {/* 🔝 Шапка */}
-    <header className="home-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <h1>Bakery Crew</h1>
-      <ProfileMenu />
-    </header>
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1>Bakery Crew Hub</h1>
+        <ProfileMenu />
+      </header>
 
       {/* 👤 Смена пользователя */}
       <section className="home-shift card">
         <p>Shift: <strong>{user?.shift || 'Not set'}</strong></p>
         <p>Role: <strong>{user?.role}</strong></p>
       </section>
+      
+      {/* 👥 Карточки - неподтвержденные пользователи */}
+      {user?.role !== 'user' && (
+        <section>
+          <h3>Pending Users</h3>
+          <PendingUserCards />
+        </section>
+      )}
 
       {/* 🔔 Динамические события */}
       <section>
+        <h3>Upcoming Events</h3>
         {!Array.isArray(events) || events.length === 0 ? (
           <p>No events</p>
         ) : (
@@ -92,28 +102,16 @@ const Home = () => {
 
       {/* 💰 Динамические донаты */}
       <section>
-        {!Array.isArray(donations) || donations.length === 0 ? (
-          <p>No active donations</p>
-        ) : (
-          donations.map((donation) => (
-            <div 
-              key={donation.id} 
-              className="card active clickable"
-              onClick={() => navigate(`/donations/${donation.id}`)}
-            >
-              <h3>{donation.title}</h3>
-              <p>Deadline: {format(new Date(donation.deadline), 'd MMM yyyy')}</p>
-            </div>
-          ))
-        )}
-      </section>
-      {/* <section>
+        <h3>Community Support</h3>
+      
         {!Array.isArray(donations) || donations.length === 0 ? (
           <p>No active donations</p>
         ) : (
           donations.map((donation) => {
             const cardClass =
-              donation.applied === false ? 'card active clickable' : 'card clickable';
+              user?.role === 'user' && donation.hasDonated === true
+                ? 'card clickable'             // Серый — уже пожертвовал
+                : 'card active clickable';     // Красный — ещё не пожертвовал
 
             return (
               <div
@@ -127,7 +125,7 @@ const Home = () => {
             );
           })
         )}
-      </section> */}
+      </section>
 
       {/* 🗓 Календарь-заглушка */}
       <section className="card calendar-placeholder" style={{ textAlign: 'center', background: '#eee' }}>

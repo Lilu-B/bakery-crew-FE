@@ -27,10 +27,13 @@ const Register = () => {
       navigate('/login');
     } catch (err) {
         const error = err as AxiosError<{ message?: string }>;
-        const errorMsg = error.response?.data?.message || '❌ Registration failed. Please try again.';
-        console.error('❌ Registration error:', errorMsg);
-        alert(errorMsg);
+        if (error.response?.status === 409) {
+          alert('❌ A user with this email already exists. Please try a different one.');
+        } else {
+          const errorMsg = error.response?.data?.message || '❌ Registration failed. Please try again.';
+          alert(errorMsg);
         }
+      }
   };
 
   return (
@@ -54,7 +57,17 @@ const Register = () => {
       </label>
       <label>
         Shift:
-        <input name="shift" value={form.shift} onChange={handleChange} />
+        <select
+          name="shift"
+          value={form.shift}
+          onChange={(e) => setForm({ ...form, shift: e.target.value })}
+          required
+        >
+          <option value="">-- Select your shift --</option>
+          <option value="1st">1st</option>
+          <option value="2nd">2nd</option>
+          <option value="night">Night</option>
+        </select>
       </label>
       <button type="submit">Register</button>
     </form>

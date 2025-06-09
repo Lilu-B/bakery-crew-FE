@@ -7,8 +7,8 @@ const BottomNav = () => {
   const navItems = [
     { path: '/', label: '🏠' },
     { path: '/events', label: '📅' },
-    { path: '/donations', label: '🐷' },
-    { path: '/messages', label: '💬' }
+    { path: '/donations', label: '🐷' }
+    // { path: '/messages', label: '💬' }
   ];
 
   return (
