@@ -18,8 +18,12 @@ const AddToGoogleCalendar = ({ title, date, description }: AddToGoogleCalendarPr
   };
 
   return (
-    <div style={{ marginTop: '1rem' }}>
+    <div style={{ marginTop: '1rem' }}
+    role="group"
+    aria-label={`Google Calendar export for ${title}`}
+    >
       <button
+        aria-label={`Add "${title}" to Google Calendar`}
         style={{
           backgroundColor: '#d32f2f',
           color: 'white',

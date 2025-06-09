@@ -10,7 +10,7 @@ const Profile = () => {
     phone: user?.phone || '',
     shift: user?.shift || ''
   });
-
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,9 +26,9 @@ const Profile = () => {
     try {
       const res = await api.patch('/users/me', form);
       setUser(res.data); // обновляем контекст
-      alert('Profile updated!');
+      setMessage({ type: 'success', text: 'Profile updated!' });
     } catch (err) {
-      alert('Failed to update profile');
+      setMessage({ type: 'error', text: 'Failed to update profile' });
       console.error(err);
     }
   };
@@ -41,10 +41,22 @@ const Profile = () => {
       logout();
       navigate('/login');
     } catch (err) {
-      alert('Failed to delete account');
+      setMessage({ type: 'error', text: 'Failed to delete account' });
       console.error(err);
     }
   };
+
+  {message && (
+    <p
+      aria-live={message.type === 'error' ? 'assertive' : 'polite'}
+      style={{
+        color: message.type === 'error' ? 'darkred' : 'green',
+        marginBottom: '1rem'
+      }}
+    >
+      {message.text}
+    </p>
+  )}
 
   return (
     <div className="card">
@@ -67,7 +79,7 @@ const Profile = () => {
             </label>
             </>
         )}
-        <button type="submit">Save</button>
+        <button aria-label="Save Profile" type="submit">Save</button>
       </form>
 
       {user?.managerId && (
@@ -78,7 +90,7 @@ const Profile = () => {
 
       <hr style={{ margin: '1rem 0' }} />
 
-      <button onClick={handleDelete} style={{ backgroundColor: 'darkred' }}>
+      <button onClick={handleDelete} aria-label="Delete Account" style={{ backgroundColor: 'darkred' }}>
         Delete Account
       </button>
     </div>

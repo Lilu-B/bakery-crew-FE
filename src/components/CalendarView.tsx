@@ -40,13 +40,15 @@ const CalendarView = ({ events }: CalendarViewProps) => {
     const hasEvent = visibleEvents.some(
       (event) => format(new Date(event.date), 'yyyy-MM-dd') === dateStr
     );
-    return hasEvent ? <div className="dot" /> : null;
+    return hasEvent ? <div className="dot" aria-label="Has event" /> : null;
   };
 
   return (
     <div className="calendar-section">
       <h2 style={{ marginBottom: '1rem' }}>Your Event Calendar</h2>
       <Calendar
+        aria-label="Event calendar" 
+        aria-labelledby="calendar-heading"
         onChange={(value) => setSelectedDate(value as Date)}
         value={selectedDate}
         tileContent={tileContent}
@@ -60,7 +62,7 @@ const CalendarView = ({ events }: CalendarViewProps) => {
       />
 
       {selectedDate && (
-        <div className="selected-date-info" style={{ marginTop: '1rem' }}>
+        <div className="selected-date-info" aria-live="polite" style={{ marginTop: '1rem' }}>
           <h3>Events on {format(selectedDate, 'd MMM yyyy')}</h3>
           {filteredEvents.length > 0 ? (
             <ul>

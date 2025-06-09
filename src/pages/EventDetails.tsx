@@ -117,14 +117,14 @@ const EventDetails = () => {
 
       {user?.role === 'user' && !submitted && (
         <div style={{ display: 'flex', gap: '1rem', margin: '1rem 0' }}>
-          <button onClick={handleApply} style={{ background: 'green' }}>Apply</button>
-          <button onClick={handleNotNow} style={{ background: 'tomato' }}>Not Now</button>
+          <button onClick={handleApply} style={{ background: 'green' }} aria-label="Apply for event">Apply</button>
+          <button onClick={handleNotNow} style={{ background: 'tomato' }} aria-label="Not Now">Not Now</button>
         </div>
       )}
 
       {submitted && (
         <>
-          <p style={{ color: 'green', marginTop: '1rem' }}>
+          <p aria-live="polite" style={{ color: 'green', marginTop: '1rem' }}>
             Your Shift Request Was Submitted!
           </p>
           <AddToGoogleCalendar
@@ -137,7 +137,7 @@ const EventDetails = () => {
 
       {user?.role !== 'user' && (
         <div style={{ textAlign: 'right' }}>
-          <button onClick={handleDelete} style={{ background: 'tomato' }}>
+          <button onClick={handleDelete} aria-label="Delete event" style={{ background: 'tomato' }}>
             DELETE
           </button>
         </div>
@@ -148,8 +148,8 @@ const EventDetails = () => {
         <p>{event.description || 'No description provided.'}</p>
       </section>
 
-      <section style={{ marginTop: '2rem' }}>
-        <p><strong>Who applied</strong></p>
+      <section aria-labelledby="applicants-heading" style={{ marginTop: '2rem' }}>
+        <p id="applicants-heading"><strong>Who applied</strong></p>
         <ul>
           {applicants.length === 0 ? (
             <li>No applicants yet.</li>

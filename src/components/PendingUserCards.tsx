@@ -42,7 +42,8 @@ const PendingUserCards = () => {
   if (loading) return <p>Loading pending users...</p>;
 
   return (
-    <section>
+    <section aria-labelledby="pending-users-heading">
+      <h2 id="pending-users-heading">Pending Users</h2>
       {pendingUsers.length === 0 ? (
         <p>No pending users to approve.</p>
       ) : (
@@ -54,10 +55,10 @@ const PendingUserCards = () => {
             <p>Shift: {user.shift}</p>
             <p>Role: {user.role}</p>
             <div style={{ marginTop: '0.5rem' }}>
-                <button onClick={() => handleApprove(user.id)} className="approve-button">
+                <button onClick={() => handleApprove(user.id)} aria-label="Approve user" className="approve-button">
                     Approve
                 </button>
-                <button onClick={() => handleDelete(user.id)} className="delete-button">
+                <button onClick={() => handleDelete(user.id)} aria-label="Delete user" className="delete-button">
                     Delete
                 </button>
             </div>

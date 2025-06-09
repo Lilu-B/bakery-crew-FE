@@ -61,14 +61,14 @@ const Events = () => {
   if (!user) return <p>User not found</p>;
 
   return (
-    <div className="events-page">
+    <div className="events-page" aria-labelledby="events-heading">
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Bakery Crew Hub</h1>
+        <h1 id="events-heading">Bakery Crew Hub</h1>
         <ProfileMenu />
       </header>
 
       {events.length === 0 ? (
-        <p>No available events</p>
+        <p aria-live="polite">No available events</p>
       ) : (
         events.map((event: Event) => {
           // 🔴 применённые ивенты — серые, не применённые — красные
@@ -80,6 +80,14 @@ const Events = () => {
               key={event.id}
               className={cardClass}
               onClick={() => navigate(`/events/${event.id}`)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  navigate(`/events/${event.id}`);
+                }
+              }}
+              aria-label={`Event: ${event.title}, ${event.shift} shift, ${format(new Date(event.date), 'd MMM yyyy')}`}
             >
               <h3>{event.title}</h3>
               <p>{format(new Date(event.date), 'd MMM yyyy')} — {event.shift} Shift</p>
@@ -94,6 +102,7 @@ const Events = () => {
       {user.role !== 'user' && (
         <button
           onClick={() => navigate('/events/create')}
+          aria-label="Create an offer"
           style={{
             marginTop: '1rem',
             background: '#47d785',

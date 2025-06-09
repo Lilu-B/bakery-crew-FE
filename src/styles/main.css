@@ -1,11 +1,9 @@
-/* Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Переменные */
 :root {
   --color-accent: #d62828;
   --color-gray: #ccc;
@@ -19,6 +17,19 @@
   --radius-sm: 4px;
   --radius-md: 8px;
   --font-main: 'Arial', sans-serif;
+}
+
+/* Accessible focus outline */
+button:focus,
+input:focus,
+a:focus {
+  outline: 3px solid #47d785;
+  outline-offset: 2px;
+}
+
+.error-message {
+  color: red;
+  margin: 0.5em 0;
 }
 
 /* Layout */
@@ -95,6 +106,18 @@ select {
   margin-bottom: var(--space-sm);
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  white-space: nowrap;
+}
+
 .card.pending {
   border: 2px solid red;
 }
@@ -104,6 +127,7 @@ select {
   border-radius: var(--radius-md);
   padding: var(--space-md);
   margin-bottom: var(--space-md);
+  background-color: var(--color-bg);
 }
 
 .active {
@@ -175,4 +199,8 @@ ul {
   color: #333 !important;        /* тёмный текст */
   font-weight: bold;
   font-size: 1.1rem;
+}
+
+section {
+  margin-bottom: var(--space-lg);
 }

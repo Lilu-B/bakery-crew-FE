@@ -27,13 +27,16 @@ const ProfileMenu = () => {
 
   return (
     <div className="profile-menu" ref={menuRef} style={{ position: 'relative' }}>
-      <div
+      <button
         title="Profile"
+        aria-haspopup="true"
+        aria-expanded={isOpen}
+        aria-label="Toggle profile menu"
         style={{ fontSize: '1.8rem', cursor: 'pointer' }}
         onClick={() => setIsOpen(!isOpen)}
       >
         😊
-      </div>
+      </button>
 
       {isOpen && (
         <div
@@ -49,10 +52,10 @@ const ProfileMenu = () => {
             zIndex: 999
           }}
         >
-          <button onClick={() => navigate('/profile')} style={{ display: 'block', marginBottom: '0.5rem' }}>
+          <button onClick={() => navigate('/profile')} aria-label="Edit Profile" style={{ display: 'block', marginBottom: '0.5rem' }}>
             ✏️ Edit Profile
           </button>
-          <button onClick={handleLogout}>🚪 Logout</button>
+          <button onClick={handleLogout} aria-label="Logout">🚪 Logout</button>
         </div>
       )}
     </div>

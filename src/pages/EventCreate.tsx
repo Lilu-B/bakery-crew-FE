@@ -127,6 +127,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           </button>
           <button
             type="button"
+            aria-label="Cancel event creation"
             className="btn-red"
             onClick={() => navigate('/events')}
           >

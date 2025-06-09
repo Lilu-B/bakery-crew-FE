@@ -42,6 +42,7 @@ const Donations = () => {
         {/* <h1>Holiday Donations</h1> */}
       </header>
 
+      
       {donations.length === 0 ? (
         <p>No active donations</p>
       ) : (
@@ -55,6 +56,14 @@ const Donations = () => {
               key={donation.id}
               className={cardClass}
               onClick={() => navigate(`/donations/${donation.id}`)}
+              role="button"
+              tabIndex={0}
+              aria-label={`View donation ${donation.title}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  navigate(`/donations/${donation.id}`);
+                }
+              }}
             >
               <h3>{donation.title}</h3>
               <p>Deadline: {format(new Date(donation.deadline), 'd MMM yyyy')}</p>
@@ -70,6 +79,7 @@ const Donations = () => {
       {user.role !== 'user' && (
         <button
           onClick={() => navigate('/donations/create')}
+          aria-label='Create new donation'
           style={{
             marginTop: '1rem',
             background: '#47d785',

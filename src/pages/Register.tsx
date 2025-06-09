@@ -12,7 +12,7 @@ const Register = () => {
     phone: '',
     shift: ''
   });
-
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,20 +23,26 @@ const Register = () => {
     e.preventDefault();
     try {
       await api.post('/register', form);
-      alert('Registered! Please wait for approval.');
-      navigate('/login');
+      setMessage({ type: 'success', text: 'Registered! Please wait for approval.' });
+      setTimeout(() => navigate('/login'), 2000); 
     } catch (err) {
-        const error = err as AxiosError<{ message?: string }>;
-        if (error.response?.status === 409) {
-          alert('❌ A user with this email already exists. Please try a different one.');
-        } else {
-          const errorMsg = error.response?.data?.message || '❌ Registration failed. Please try again.';
-          alert(errorMsg);
-        }
+      const error = err as AxiosError<{ message?: string }>;
+      if (error.response?.status === 409) {
+        setMessage({ type: 'error', text: '❌ A user with this email already exists. Please try a different one.' });
+      } else {
+        const errorMsg = error.response?.data?.message || '❌ Registration failed. Please try again.';
+        setMessage({ type: 'error', text: errorMsg });
       }
+    }
   };
 
   return (
+        <>
+      {message && (
+        <p aria-live={message.type === 'error' ? 'assertive' : 'polite'} style={{ color: message.type === 'error' ? 'darkred' : 'green' }}>
+          {message.text}
+        </p>
+      )}
     <form onSubmit={handleRegister}>
       <h2>Register</h2>
       <label>
@@ -69,8 +75,9 @@ const Register = () => {
           <option value="night">Night</option>
         </select>
       </label>
-      <button type="submit">Register</button>
+      <button aria-label="Register" type="submit">Register</button>
     </form>
+    </>
   );
 };
 

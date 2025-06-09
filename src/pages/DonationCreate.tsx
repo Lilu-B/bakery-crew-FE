@@ -57,7 +57,9 @@ const DonationCreate = () => {
 
       <form onSubmit={handleSubmit} className="card" style={{ marginTop: '1rem' }}>
         <div>
+          <label htmlFor="donation-title">Title</label>
           <input
+            id="donation-title"
             type="text"
             placeholder="Title"
             value={title}
@@ -68,7 +70,9 @@ const DonationCreate = () => {
         </div>
 
         <div style={{ marginTop: '1rem' }}>
+          <label htmlFor="donation-description">Description</label>
           <textarea
+            id="donation-description"
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -79,14 +83,13 @@ const DonationCreate = () => {
         </div>
 
         <div style={{ marginTop: '1rem' }}>
-          <label>
-            Deadline:{' '}
-            <input
-              type="date"
-              value={deadline}
-              onChange={(e) => setDeadline(e.target.value)}
-            />
-          </label>
+          <label htmlFor="donation-deadline">Deadline:</label>
+          <input
+            id="donation-deadline"
+            type="date"
+            value={deadline}
+            onChange={(e) => setDeadline(e.target.value)}
+          />
         </div>
 
         {error && (
@@ -94,10 +97,10 @@ const DonationCreate = () => {
         )}
 
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
-          <button type="submit" className="btn-green">
+          <button type="submit" className="btn-green" aria-label="Submit donation">
             Submit
           </button>
-          <button type="button" className="btn-red" onClick={() => navigate('/donations')}>
+          <button type="button" className="btn-red" onClick={() => navigate('/donations')} aria-label="Cancel donation">
             Cancel
           </button>
         </div>

@@ -66,7 +66,6 @@ console.log('👉 Получено с сервера:', res.data);
 
       // 🔄 обновляем сбор после пожертвования
       const updated = await api.get(`/donations/${id}`);
-console.log('✅ Обновлённый сбор:', updated.data.donation);
       setDonation(updated.data.donation);
     } catch (err) {
       const error = err as AxiosError<{ msg?: string }>;
@@ -87,10 +86,10 @@ console.log('✅ Обновлённый сбор:', updated.data.donation);
   };
 
   if (loading || !donation) return <p>Loading donation...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+  if (error) return <p aria-live="assertive" style={{ color: 'red' }}>{error}</p>;
 
   return (
-    <div className="donation-details">
+    <main role="main" className="donation-details">
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Bakery Crew Hub</h1>
         <ProfileMenu />
@@ -106,16 +105,18 @@ console.log('✅ Обновлённый сбор:', updated.data.donation);
 
       {user?.role === 'user' && !donation.hasDonated && (
         <>
-{console.log('📌 Показываем форму, hasDonated =', donation.hasDonated)}
+
         <div style={{ marginTop: '1rem' }}>
+          <label htmlFor="donation-amount">Donation amount (£)</label>
           <input
             type="number"
+            id="donation-amount"
             placeholder="Enter amount (£)"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             style={{ width: '100%', marginBottom: '0.5rem' }}
           />
-          <button onClick={handleDonate} className="btn-green">
+          <button onClick={handleDonate} aria-label="Donate" className="btn-green">
             Donate
           </button>
         </div>
@@ -123,17 +124,17 @@ console.log('✅ Обновлённый сбор:', updated.data.donation);
       )}
 
       {donation.hasDonated && (
-        <p style={{ color: 'green' }}>✅ Thank you for your donation!</p>
+        <p aria-live="polite" style={{ color: 'green' }}>✅ Thank you for your donation!</p>
       )}
 
       {user?.role !== 'user' && (
         <div style={{ textAlign: 'right', marginTop: '1rem' }}>
-          <button onClick={handleDelete} className="btn-red">DELETE</button>
+          <button onClick={handleDelete} aria-label="Delete donation" className="btn-red">DELETE</button>
         </div>
       )}
 
       <BottomNav />
-    </div>
+    </main>
   );
 };
 

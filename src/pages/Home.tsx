@@ -55,10 +55,10 @@ const Home = () => {
     //   <button onClick={logout}>Logout</button>
     // </div>
 
-    <div className="home-container">
+    <div className="home-container" aria-labelledby="home-heading">
       {/* 🔝 Шапка */}
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Bakery Crew Hub</h1>
+        <h1 id="home-heading">Bakery Crew Hub</h1>
         <ProfileMenu />
       </header>
 
@@ -80,7 +80,7 @@ const Home = () => {
       <section>
         <h3>Upcoming Events</h3>
         {!Array.isArray(events) || events.length === 0 ? (
-          <p>No events</p>
+          <p  aria-live="polite">No events</p>
         ) : (
           events.map((event) => {
             const cardClass =
@@ -90,7 +90,15 @@ const Home = () => {
               <div 
                 key={event.id} 
                 className={cardClass}
+                role="button"
+                tabIndex={0}
+                aria-label={`Event: ${event.title}, ${event.shift} shift, ${format(new Date(event.date), 'd MMM yyyy')}`}
                 onClick={() => navigate(`/events/${event.id}`)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    navigate(`/events/${event.id}`);
+                  }
+                }}
               >
                 <h3>{event.title}</h3>
                 <p>{format(new Date(event.date), 'd MMM yyyy')} — Shift: {event.shift}</p>
@@ -105,7 +113,7 @@ const Home = () => {
         <h3>Community Support</h3>
       
         {!Array.isArray(donations) || donations.length === 0 ? (
-          <p>No active donations</p>
+          <p aria-live="polite">No active donations</p>
         ) : (
           donations.map((donation) => {
             const cardClass =
@@ -117,7 +125,15 @@ const Home = () => {
               <div
                 key={donation.id}
                 className={cardClass}
+                role="button"
+                tabIndex={0}
+                aria-label={`Donation: ${donation.title}, deadline ${format(new Date(donation.deadline), 'd MMM yyyy')}`}
                 onClick={() => navigate(`/donations/${donation.id}`)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    navigate(`/donations/${donation.id}`);
+                  }
+                }}
               >
                 <h3>{donation.title}</h3>
                 <p>Deadline: {format(new Date(donation.deadline), 'd MMM yyyy')}</p>

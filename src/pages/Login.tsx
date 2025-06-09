@@ -11,7 +11,7 @@ function Login() {
   const { user, setUser } = useUser();
   const navigate = useNavigate();
   const [loginInProgress, setLoginInProgress] = useState(false); // ⏳ статус входа
-
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loginInProgress) {
@@ -33,8 +33,7 @@ console.log('✅ Login success, token:', res.data.token);
       setUser(normalizedUser as User);  // сохраняем в глобальный контекст
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;
-      console.error('Login error:', error.response?.data || error.message);
-      alert(error.response?.data?.message || 'Login failed. Please try again.');
+      setErrorMessage(error.response?.data?.message || 'Login failed. Please try again.');
     } finally {
       setLoginInProgress(false);
     }
@@ -49,33 +48,39 @@ console.log('✅ Login success, token:', res.data.token);
   }, [user, loginInProgress, navigate]);
 
   return (
+  <section aria-labelledby="login-heading">
+    <h2 id="login-heading">Login</h2>
     <form onSubmit={handleLogin}>
       <h2>Login</h2>
-      <label>
-        Email:
-        <input
-          type="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Password:
-        <input
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          required
-        />
-      </label>
-      <button type="submit" disabled={loginInProgress}>
+      <label htmlFor="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+        required
+      />
+      <label htmlFor="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+        required
+      />
+      {errorMessage && (
+        <p aria-live="assertive" style={{ color: 'red', marginBottom: '1rem' }}>
+          {errorMessage}
+        </p>
+      )}
+      <button type="submit" aria-label="Login" disabled={loginInProgress}>
         {loginInProgress ? 'Logging in...' : 'Login'}
       </button>
-            <p style={{ marginTop: '1rem' }}>
+      <p style={{ marginTop: '1rem' }}>
         Don't have an account? <Link to="/register">Register</Link>
       </p>
     </form>
+  </section>
   );
 };
 

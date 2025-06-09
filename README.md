@@ -162,6 +162,19 @@ src/
   - “Delete” (🗑 DELETE `/api/users/:id`)
 - Styled red border to highlight pending users (`.card.pending`)
 
+### 🧑‍🦯 Accessibility (A11y) Improvements
+
+The project now supports better accessibility for users with screen readers or other assistive technologies.
+
+**What was implemented:**
+
+- Replaced `alert()` messages with visually rendered text using `<p aria-live="...">` to provide non-intrusive, accessible feedback for success and error messages.
+- Ensured that all interactive elements (like buttons) include `aria-label`s to describe their action clearly.
+- Marked error and success messages with `aria-live="assertive"` or `aria-live="polite"` to ensure they are read by screen readers appropriately.
+
+**Example changes:**
+- Registration form now displays error and success messages inside the DOM instead of using `alert()`, which improves accessibility and user experience.
+
 ---
 
 ## 🔁 Data Normalization
@@ -325,7 +338,6 @@ Connected to:
 - Messages inbox & replies (feature UI hidden for now, planned soon)
 - Donation confirmation & payment flow - Stripe integration for real donation
 - Role-based admin dashboard
-- A11y improvements for keyboard navigation & screen readers
 
 ---
 
@@ -333,42 +345,3 @@ Connected to:
 
 This project connects to the backend repository:  
 https://github.com/Lilu-B/bakery-crew-BE
-
-----------------------------------------------------------------
-----------------------------------------------------------------
-----------------------------------------------------------------
-
-Техническое задание (Minimum Viable Product - MVP)
-
-Обязательная функциональность:
-	1.	Отображение списка событий (овертаймов) для обзора
-	2.	Возможность для пользователей откликаться на события
-	3.	Возможность добавления событий в Google Calendar после отклика
-	4.	Возможность для сотрудников (менеджеров) войти в систему и создавать/управлять событиями
-
-⸻
-
-Технологии:
-	•	React / React Native для фронтенда
-	•	TypeScript добровольно, как новый вызов
-	•	Google Calendar API для интеграции
-	•	Node.js/БЭКЕНД: принципы безопасной аутентификации
-
-⸻
-
-UI-Требования:
-	•	Респонсив дизайн для разных размеров экрана
-	•	Аксессибилити: поддержка считывателей экрана, навигации с клавиатуры
-	•	Очевидные состояния загрузки и ошибки для пользователей
-	•	Интуитивный интерфейс: просмотр, отклик, создание событий
-
-⸻
-
-Требования к сдаче проекта:
-	1.	Хостинг и открытый доступ к проекту (web или mobile)
-	2.	README содержит:
-	•	Обзор проекта
-	•	Добровольно: ссылка на видеообзор
-	•	Данные для тестового входа
-	•	Инструкция для local-запуска проекта
-	3.	Обязательное выполнение всех MVP-пунктов
