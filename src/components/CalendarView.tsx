@@ -11,7 +11,6 @@ const CalendarView = ({ events }: CalendarViewProps) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
 
-  // ✅ Фильтрация по роли (мемоизировано)
   const visibleEvents = useMemo(() => {
     return events.filter((event) => {
       if (user?.role === 'user') {
@@ -20,11 +19,10 @@ const CalendarView = ({ events }: CalendarViewProps) => {
       if (user?.role === 'manager') {
         return event.shift === user.shift;
       }
-      return true; // developer
+      return true; 
     });
   }, [events, user]);
 
-  // 🎯 Фильтрация по выбранной дате
   useEffect(() => {
     const matches = visibleEvents.filter(
       (event) =>
@@ -34,7 +32,6 @@ const CalendarView = ({ events }: CalendarViewProps) => {
     setFilteredEvents(matches);
   }, [selectedDate, visibleEvents]);
 
-  // 📍 Отображение точки на календаре
   const tileContent = ({ date }: { date: Date }) => {
     const dateStr = format(date, 'yyyy-MM-dd');
     const hasEvent = visibleEvents.some(
@@ -55,7 +52,7 @@ const CalendarView = ({ events }: CalendarViewProps) => {
         tileClassName={({ date, view }) => {
             if (view === 'month') {
             const day = date.getDay();
-            if (day === 0 || day === 6) return 'weekend'; // воскресенье (0) или суббота (6)
+            if (day === 0 || day === 6) return 'weekend'; 
             }
             return '';
         }}

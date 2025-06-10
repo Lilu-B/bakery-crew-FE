@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import api from '../api/axios';   // используем наш кастомный экземпляр с интерсептором
+import api from '../api/axios'; 
 import { AxiosError } from 'axios';
-interface UserProviderProps { // Типизация пропсов для провайдера
+interface UserProviderProps { 
   children: React.ReactNode;
 }
 
-// Тип пользователя
 export interface User {
   id: number;
   name: string;
@@ -17,7 +16,6 @@ export interface User {
   managerId?: number;
 }
 
-// Тип для самого контекста
 interface UserContextType {
   user: User | null;
   setUser: (user: User | null) => void;
@@ -25,10 +23,8 @@ interface UserContextType {
   loading: boolean; 
 }
 
-// Создание контекста с undefined по умолчанию
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-// Провайдер пользователя
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,21 +34,19 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     sessionStorage.removeItem('token');
   };
 
-  // Попытка автоавторизации (напр. при обновлении страницы)  + отлов ошибок через AxiosError
   useEffect(() => {
-    let isMounted = true; // защита от обновления размонтированного компонента
+    let isMounted = true; 
     const token = sessionStorage.getItem('token');
 
     if (token && !user) {
       api.get('/protected')
         .then((res) => {
         if (isMounted) {
-            setUser(res.data as User); // данные уже camelCase
+            setUser(res.data as User);
         }
         })
         .catch((err: AxiosError<{ message?: string }>) => {
           const message = err.response?.data?.message || 'Session expired. Please log in again.';
-          console.error('❌ Auth error:', message);
           alert(message);
           logout();
         })

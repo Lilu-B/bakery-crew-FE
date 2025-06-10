@@ -15,7 +15,6 @@ const DonationCreate = () => {
   const [deadline, setDeadline] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  // 🔒 Защита: только manager и developer могут видеть эту страницу
   if (!user || (user.role !== 'manager' && user.role !== 'developer')) {
     return <p>You do not have access to create donations.</p>;
   }
@@ -23,7 +22,6 @@ const DonationCreate = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 🔍 Проверка ввода
     if (!title.trim()) return setError('Title is required');
     if (!description.trim()) return setError('Description is required');
     if (description.length > 500) return setError('Description too long');
@@ -35,7 +33,6 @@ const DonationCreate = () => {
         deadline: deadline ? new Date(deadline).toISOString() : undefined
       });
 
-      // 🧹 Очистка и переход
       setTitle('');
       setDescription('');
       setDeadline('');
@@ -97,10 +94,10 @@ const DonationCreate = () => {
         )}
 
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
-          <button type="submit" className="btn-green" aria-label="Submit donation">
+          <button type="submit" className="approve-button" aria-label="Submit donation">
             Submit
           </button>
-          <button type="button" className="btn-red" onClick={() => navigate('/donations')} aria-label="Cancel donation">
+          <button type="button" className="delete-button" onClick={() => navigate('/donations')} aria-label="Cancel donation">
             Cancel
           </button>
         </div>

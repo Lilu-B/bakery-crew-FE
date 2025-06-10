@@ -25,7 +25,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       const res = await api.patch('/users/me', form);
-      setUser(res.data); // обновляем контекст
+      setUser(res.data); 
       setMessage({ type: 'success', text: 'Profile updated!' });
     } catch (err) {
       setMessage({ type: 'error', text: 'Failed to update profile' });
@@ -66,7 +66,7 @@ const Profile = () => {
           Name:
           <input name="name" value={form.name} onChange={handleChange} required />
         </label>
-    {/* Показывать только если НЕ админ */}
+
         {user?.role !== 'developer' && (
             <>
             <label>
@@ -79,7 +79,7 @@ const Profile = () => {
             </label>
             </>
         )}
-        <button aria-label="Save Profile" type="submit">Save</button>
+        <button aria-label="Save Profile" type="submit" className="approve-button">Save</button>
       </form>
 
       {user?.managerId && (
@@ -90,7 +90,7 @@ const Profile = () => {
 
       <hr style={{ margin: '1rem 0' }} />
 
-      <button onClick={handleDelete} aria-label="Delete Account" style={{ backgroundColor: 'darkred' }}>
+      <button onClick={handleDelete} aria-label="Delete Account" className="delete-button">
         Delete Account
       </button>
     </div>

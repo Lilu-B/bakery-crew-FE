@@ -10,7 +10,7 @@ export interface Event {
   createdAt: string;
   status: string;
   creatorName: string;
-  applied?: boolean; // только для пользователей (user)
+  applied?: boolean; 
 }
 
 export interface CalendarViewProps {

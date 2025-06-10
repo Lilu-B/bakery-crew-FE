@@ -20,14 +20,12 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Защищённые страницы */}
         <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/events" element={<ProtectedRoute><Events /></ProtectedRoute>} />
         <Route path="/events/:eventId" element={<ProtectedRoute><EventDetails /></ProtectedRoute>} />
         <Route path="/events/create" element={<ProtectedRoute><EventCreate /></ProtectedRoute>} />
-        
-        {/* Остальные защищённые страницы */}
+
         <Route path="/donations" element={<ProtectedRoute><Donations /></ProtectedRoute>} />
         <Route path="/donations/:donationId" element={<ProtectedRoute><DonationDetails /></ProtectedRoute>} />
         <Route path="/donations/create" element={<ProtectedRoute><DonationCreate /></ProtectedRoute>} />
@@ -37,20 +35,5 @@ const App = () => {
   );
 };
 
-        {/* Защищённые страницы 
-          
-        <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/donations" element={<Donations />} />
-          <Route path="/messages" element={<Messages />} />
-        </Route>
-          
-          import { Navigate, Outlet } from 'react-router-dom';
-
-        const ProtectedRoute = () => {
-          const isAuthenticated = / логика проверки токена /;
-          return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
-        */};
 
 export default App

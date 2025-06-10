@@ -154,11 +154,11 @@ ul {
 }
 
 .react-calendar__tile {
-  color: #333; /* обычный тёмный цвет */
+  color: #333; 
 }
 
 .react-calendar__tile:disabled {
-  color: #ccc; /* для дней вне месяца */
+  color: #ccc; 
 }
 
 .react-calendar__tile--now {
@@ -172,11 +172,10 @@ ul {
 }
 
 .weekend {
-  color: #ef2a2a !important; /* красный */
+  color: #ef2a2a !important; 
   font-weight: bold;
 }
 
-/* 🌟 Панель навигации */
 .react-calendar__navigation {
   background: transparent;
   display: flex;
@@ -185,18 +184,16 @@ ul {
   margin-bottom: 0.5rem;
 }
 
-/* 🌟 Кнопки навигации: < > */
 .react-calendar__navigation button {
-  color: #333 !important;        /* тёмный цвет текста */
+  color: #333 !important;     
   font-weight: 600;
   background: none;
   border: none;
   cursor: pointer;
 }
 
-/* 🗓 Название месяца */
 .react-calendar__navigation__label {
-  color: #333 !important;        /* тёмный текст */
+  color: #333 !important;      
   font-weight: bold;
   font-size: 1.1rem;
 }

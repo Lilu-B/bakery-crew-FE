@@ -27,7 +27,7 @@ const BottomNav = () => {
         <button
           key={item.path}
           onClick={() => navigate(item.path)}
-          aria-label={item.ariaLabel} // Используем ariaLabel из массива navItems
+          aria-label={item.ariaLabel} 
           style={{
             fontSize: '1.5rem',
             background: location.pathname === item.path ? '#eee' : 'transparent',

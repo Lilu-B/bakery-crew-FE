@@ -32,14 +32,12 @@ const Events = () => {
               event.shift === user.shift
           );
         } else {
-          // user — события своей смены или от его менеджера
           filteredEvents = allEvents.filter(
             (event: Event) =>
               event.shift === user.shift || event.createdBy === user.managerId
           );
         }
 
-        // Сортировка по дате события
         const sorted = filteredEvents.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
         );
@@ -71,7 +69,6 @@ const Events = () => {
         <p aria-live="polite">No available events</p>
       ) : (
         events.map((event: Event) => {
-          // 🔴 применённые ивенты — серые, не применённые — красные
           const cardClass =
             event.applied === false ? 'card active clickable' : 'card clickable';
 
@@ -105,7 +102,7 @@ const Events = () => {
           aria-label="Create an offer"
           style={{
             marginTop: '1rem',
-            background: '#47d785',
+            background: '#green',
             padding: '1rem',
             borderRadius: '8px',
             width: '100%',

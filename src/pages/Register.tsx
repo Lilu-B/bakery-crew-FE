@@ -28,9 +28,9 @@ const Register = () => {
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;
       if (error.response?.status === 409) {
-        setMessage({ type: 'error', text: '❌ A user with this email already exists. Please try a different one.' });
+        setMessage({ type: 'error', text: 'A user with this email already exists. Please try a different one.' });
       } else {
-        const errorMsg = error.response?.data?.message || '❌ Registration failed. Please try again.';
+        const errorMsg = error.response?.data?.message || 'Registration failed. Please try again.';
         setMessage({ type: 'error', text: errorMsg });
       }
     }
@@ -75,7 +75,7 @@ const Register = () => {
           <option value="night">Night</option>
         </select>
       </label>
-      <button aria-label="Register" type="submit">Register</button>
+      <button aria-label="Register" type="submit" className="approve-button">Register</button>
     </form>
     </>
   );

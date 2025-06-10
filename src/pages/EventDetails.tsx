@@ -22,10 +22,7 @@ const EventDetails = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  
-  // ✅ Безопасно преобразуем в число один раз
   const id = Number(eventId);
-  // ✅ Защита: если параметр не передан — возвращаем ошибку
   const isInvalid = !eventId || isNaN(id); 
 
   useEffect(() => {
@@ -34,9 +31,6 @@ const EventDetails = () => {
             navigate('/events');
             return; 
         }
-   
-    // Загружаем данные события по ID
-    // Используем async/await для асинхронной загрузки
 
     const loadEvent = async () => {
       try {
@@ -44,7 +38,6 @@ const EventDetails = () => {
         setEvent(res);
         if (res.applied) setSubmitted(true);
 
-        // 👥 Загружаем подписавшихся
         const applicantsRes = await api.get(`/events/${eventId}/applicants`);
         setApplicants(applicantsRes.data.applicants || []);
       } catch (err) {
@@ -63,16 +56,16 @@ const EventDetails = () => {
 
     const handleApply = async () => {
     try {
-        const { msg } = await applyToEvent(id); // уже типизировано и обёрнуто
-        alert(msg); // Показываем "Application submitted" - Можно заменить на toast
-        // ✅ Обновляем статус
+        const { msg } = await applyToEvent(id); 
+        alert(msg); 
+ 
         setSubmitted(true);
-        // ✅ Обновляем список участников (без перезагрузки)
+ 
         const res = await api.get(`/events/${id}/applicants`);
         setApplicants(res.data.applicants || []);
     } catch (err) {
         const error = err as AxiosError<{ msg?: string }>;
-        alert(error.response?.data?.msg || '❌ Failed to apply');
+        alert(error.response?.data?.msg || 'Failed to apply');
     }
     };
 
@@ -82,12 +75,12 @@ const EventDetails = () => {
     if (!window.confirm('Are you sure you want to delete this event?')) return;
 
     try {
-        const { msg } = await deleteEvent(id); // вызываем нашу typed функцию
-        alert(msg); // Показываем "Event deleted"
-        navigate('/events'); // Перенаправляем на список
+        const { msg } = await deleteEvent(id); 
+        alert(msg); 
+        navigate('/events'); 
     } catch (err) {
         const error = err as AxiosError<{ msg?: string }>;
-        alert(error.response?.data?.msg || '❌ Failed to delete');
+        alert(error.response?.data?.msg || 'Failed to delete');
     }
     };
 
@@ -137,7 +130,7 @@ const EventDetails = () => {
 
       {user?.role !== 'user' && (
         <div style={{ textAlign: 'right' }}>
-          <button onClick={handleDelete} aria-label="Delete event" style={{ background: 'tomato' }}>
+          <button onClick={handleDelete} aria-label="Delete event" className="delete-button">
             DELETE
           </button>
         </div>

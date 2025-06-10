@@ -1,12 +1,6 @@
-// pages/DonationDetails.tsx
-
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
-// import { 
-//     fetchDonationById, 
-//     confirmDonationPayment, 
-//     deleteDonation } from '../api/donations';
 import BottomNav from '../components/BottomNav';
 import ProfileMenu from '../components/ProfileMenu';
 import { format } from 'date-fns';
@@ -21,7 +15,6 @@ const DonationDetails = () => {
   const [donation, setDonation] = useState<Donation | null>(null);
 
   const [amount, setAmount] = useState('');
-//   const [hasDonated, setHasDonated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,7 +33,6 @@ const DonationDetails = () => {
         const res = await api.get(`/donations/${id}`);
 console.log('👉 Получено с сервера:', res.data);
         setDonation(res.data.donation);
-        // setHasDonated(res.data.donation.has_donated || false);
     } catch (err) {
         const error = err as AxiosError<{ msg?: string }>;
         alert(error.response?.data?.msg || 'Error loading donation');
@@ -61,15 +53,13 @@ console.log('👉 Получено с сервера:', res.data);
     try {
       const res = await api.post(`/donations/${id}/confirm-payment`, { amount: numericAmount });
       alert(res.data.msg);
-    //   setHasDonated(true);
       setAmount('');
 
-      // 🔄 обновляем сбор после пожертвования
       const updated = await api.get(`/donations/${id}`);
       setDonation(updated.data.donation);
     } catch (err) {
       const error = err as AxiosError<{ msg?: string }>;
-      alert(error.response?.data?.msg || '❌ Failed to donate');
+      alert(error.response?.data?.msg || 'Failed to donate');
     }
   };
 
@@ -81,7 +71,7 @@ console.log('👉 Получено с сервера:', res.data);
       navigate('/donations');
     } catch (err) {
       const error = err as AxiosError<{ msg?: string }>;
-      alert(error.response?.data?.msg || '❌ Failed to delete donation');
+      alert(error.response?.data?.msg || 'Failed to delete donation');
     }
   };
 
@@ -116,7 +106,7 @@ console.log('👉 Получено с сервера:', res.data);
             onChange={(e) => setAmount(e.target.value)}
             style={{ width: '100%', marginBottom: '0.5rem' }}
           />
-          <button onClick={handleDonate} aria-label="Donate" className="btn-green">
+          <button onClick={handleDonate} aria-label="Donate" className="approve-button">
             Donate
           </button>
         </div>
@@ -124,12 +114,12 @@ console.log('👉 Получено с сервера:', res.data);
       )}
 
       {donation.hasDonated && (
-        <p aria-live="polite" style={{ color: 'green' }}>✅ Thank you for your donation!</p>
+        <p aria-live="polite" style={{ color: 'green' }}>Thank you for your donation!</p>
       )}
 
       {user?.role !== 'user' && (
         <div style={{ textAlign: 'right', marginTop: '1rem' }}>
-          <button onClick={handleDelete} aria-label="Delete donation" className="btn-red">DELETE</button>
+          <button onClick={handleDelete} aria-label="Delete donation" className="delete-button">DELETE</button>
         </div>
       )}
 

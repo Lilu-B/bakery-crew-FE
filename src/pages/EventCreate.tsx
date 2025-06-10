@@ -22,7 +22,6 @@ const EventCreate = () => {
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
-  // 💥 Сначала проверяем все поля
   if (!title.trim()) {
     return setError('Title is required');
   }
@@ -36,7 +35,6 @@ const handleSubmit = async (e: React.FormEvent) => {
     return setError('Description cannot exceed 500 characters');
   }
 
-  // ✅ Если всё ОК — форматируем дату и отправляем
   const formattedDate = new Date(date).toISOString();
 
   try {
@@ -47,7 +45,6 @@ const handleSubmit = async (e: React.FormEvent) => {
       shift,
     });
 
-    // 🧹 Очищаем форму
     setError(null);
     setTitle('');
     setDate('');
@@ -98,7 +95,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             <select
                 value={shift}
                 onChange={(e) => setShift(e.target.value as '1st' | '2nd' | 'night')}
-                disabled={user.role === 'manager'} // Менеджер не может менять
+                disabled={user.role === 'manager'} 
             >
               <option value="1st">1st</option>
               <option value="2nd">2nd</option>
@@ -122,13 +119,13 @@ const handleSubmit = async (e: React.FormEvent) => {
         )}
 
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem' }}>
-          <button type="submit" className="btn-green">
+          <button type="submit" className="approve-button" aria-label="Submit event">
             Submit
           </button>
           <button
             type="button"
             aria-label="Cancel event creation"
-            className="btn-red"
+            className="delete-button"
             onClick={() => navigate('/events')}
           >
             Cancel

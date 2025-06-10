@@ -8,7 +8,6 @@ const ProfileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Закрывать меню при клике вне его
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -32,7 +31,7 @@ const ProfileMenu = () => {
         aria-haspopup="true"
         aria-expanded={isOpen}
         aria-label="Toggle profile menu"
-        style={{ fontSize: '1.8rem', cursor: 'pointer' }}
+        style={{ fontSize: '1.8rem', cursor: 'pointer', backgroundColor: 'transparent' }}
         onClick={() => setIsOpen(!isOpen)}
       >
         😊
@@ -52,10 +51,10 @@ const ProfileMenu = () => {
             zIndex: 999
           }}
         >
-          <button onClick={() => navigate('/profile')} aria-label="Edit Profile" style={{ display: 'block', marginBottom: '0.5rem' }}>
-            ✏️ Edit Profile
+          <button onClick={() => navigate('/profile')} aria-label="Edit Profile" style={{ display: 'block', marginBottom: '0.5rem', backgroundColor: 'transparent', color: 'inherit' }}>
+            Edit Profile
           </button>
-          <button onClick={handleLogout} aria-label="Logout">🚪 Logout</button>
+          <button onClick={handleLogout} aria-label="Logout" style={{ backgroundColor: 'transparent', color: 'inherit' }}>Logout</button>
         </div>
       )}
     </div>

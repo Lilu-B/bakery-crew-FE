@@ -3,12 +3,8 @@ import camelcaseKeys from 'camelcase-keys';
 
 const api = axios.create({
   baseURL: 'https://bakery-crew-be.onrender.com/api'
-//   baseURL: import.meta.env.VITE_API_URL || '/api'   // Для продакшена позже можно будет сделать
 });
 
-// 🔐 Добавляем токен - интерсептор для обработки ошибок
-// это специальный “перехватчик” каждого запроса, который автоматически добавляет токен из sessionStorage к заголовкам.
-// Благодаря этому, тебе НЕ нужно вручную добавлять Authorization в handleLogin через api.defaults.headers.common[...].
 api.interceptors.request.use((config) => {
   const token = sessionStorage.getItem('token');
   if (token) {
@@ -17,7 +13,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// ✨ Добавляем перехватчик ответов — camelCase конвертация
 api.interceptors.response.use(
   (response) => {
     if (

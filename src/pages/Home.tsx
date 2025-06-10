@@ -23,8 +23,6 @@ const Home = () => {
     const fetchData = async () => {
         try {
         const eventsData = await fetchEvents();
-        // Получаем активные донаты
-        // Если пользователь — менеджер, то фильтруем события по смене
         if (user?.role === 'manager' || user?.role === 'user') {
           const filteredEvents = eventsData.filter((event) => event.shift === user.shift);
           setEvents(filteredEvents);
@@ -39,7 +37,6 @@ const Home = () => {
             const errorMsg = error.response?.data?.message || '❌ Failed to load dashboard data.';
             console.error('❌ Dashboard error:', errorMsg);
             alert(errorMsg);
-            // Очистка данных при ошибке
             setEvents([]);
             setDonations([]);
         }

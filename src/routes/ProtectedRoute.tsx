@@ -7,11 +7,8 @@ interface Props {
 }
 
 const ProtectedRoute = ({ children }: Props) => {
-  const { user, loading } = useUser();     // хук для доступа к контексту пользователя
-  // проверяем, загружается ли информация о пользователе
-  // и если да, то показываем индикатор загрузки
-  // если пользователь не авторизован, не одобрен - перенаправляем на страницу логина
-  // если пользователь авторизован и одобрен, отображаем защищённый контент
+  const { user, loading } = useUser();   
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -22,7 +19,7 @@ const ProtectedRoute = ({ children }: Props) => {
     if (!user.isApproved) {
         return <Navigate to="/login" replace />;
     }                                                                                       
-  return <>{children}</>; // оборачиваем в React Fragment
+  return <>{children}</>; 
 };
 
 export default ProtectedRoute;

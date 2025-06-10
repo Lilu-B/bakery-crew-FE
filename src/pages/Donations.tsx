@@ -9,7 +9,7 @@ import type { AxiosError } from 'axios';
 import type { Donation } from '../types/donation';
 
 const Donations = () => {
-  const { user, loading } = useUser();           // Получаем текущего пользователя
+  const { user, loading } = useUser();       
   const navigate = useNavigate();
   const [donations, setDonations] = useState<Donation[]>([]);
   const [loadingDonations, setLoadingDonations] = useState(true);
@@ -17,12 +17,12 @@ const Donations = () => {
   useEffect(() => {
     const loadDonations = async () => {
       try {
-        const data = await fetchActiveDonations(); // Загружаем активные сборы
+        const data = await fetchActiveDonations(); 
         const sorted = data.sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime());
-        setDonations(sorted);                      // Сохраняем отсортированный список
+        setDonations(sorted);                  
       } catch (err) {
         const error = err as AxiosError<{ msg?: string }>;
-        alert(error.response?.data?.msg || '❌ Failed to load donations');
+        alert(error.response?.data?.msg || 'Failed to load donations');
       } finally {
         setLoadingDonations(false);
       }
@@ -39,7 +39,6 @@ const Donations = () => {
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Bakery Crew Hub</h1>
         <ProfileMenu />
-        {/* <h1>Holiday Donations</h1> */}
       </header>
 
       
@@ -47,7 +46,6 @@ const Donations = () => {
         <p>No active donations</p>
       ) : (
         donations.map((donation) => {
-          // 🔴 если не донатил — красная рамка, иначе — серая
           const cardClass =
             donation.hasDonated === false ? 'card active clickable' : 'card clickable';
 
@@ -75,14 +73,13 @@ const Donations = () => {
         })
       )}
 
-      {/* Только для менеджеров и админов отображаем кнопку создания */}
       {user.role !== 'user' && (
         <button
           onClick={() => navigate('/donations/create')}
           aria-label='Create new donation'
           style={{
             marginTop: '1rem',
-            background: '#47d785',
+            background: '#green',
             padding: '1rem',
             borderRadius: '8px',
             width: '100%',

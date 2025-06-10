@@ -25,7 +25,7 @@ const AddToGoogleCalendar = ({ title, date, description }: AddToGoogleCalendarPr
       <button
         aria-label={`Add "${title}" to Google Calendar`}
         style={{
-          backgroundColor: '#d32f2f',
+          backgroundColor: '#green',
           color: 'white',
           border: 'none',
           padding: '0.5rem 1rem',
