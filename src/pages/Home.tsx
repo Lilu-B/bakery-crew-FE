@@ -48,35 +48,24 @@ const Home = () => {
     }, [user]);
 
   return (
-    // <div>
-    //   <h2>Welcome, {user?.name}</h2>
-    //   <p>Your role: {user?.role}</p>
-    //   <p>Your shift: {user?.shift}</p>
-    //   <button onClick={logout}>Logout</button>
-    // </div>
-
     <div className="home-container" aria-labelledby="home-heading">
-      {/* 🔝 Шапка */}
+
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1 id="home-heading">Bakery Crew Hub</h1>
         <ProfileMenu />
       </header>
 
-      {/* 👤 Смена пользователя */}
       <section className="home-shift card">
         <p>Shift: <strong>{user?.shift || 'Not set'}</strong></p>
         <p>Role: <strong>{user?.role}</strong></p>
       </section>
       
-      {/* 👥 Карточки - неподтвержденные пользователи */}
       {user?.role !== 'user' && (
         <section>
-          <h3>Pending Users</h3>
           <PendingUserCards />
         </section>
       )}
 
-      {/* 🔔 Динамические события */}
       <section>
         <h3>Upcoming Events</h3>
         {!Array.isArray(events) || events.length === 0 ? (
@@ -108,7 +97,6 @@ const Home = () => {
         )}
       </section>
 
-      {/* 💰 Динамические донаты */}
       <section>
         <h3>Community Support</h3>
       
@@ -118,8 +106,8 @@ const Home = () => {
           donations.map((donation) => {
             const cardClass =
               user?.role === 'user' && donation.hasDonated === true
-                ? 'card clickable'             // Серый — уже пожертвовал
-                : 'card active clickable';     // Красный — ещё не пожертвовал
+                ? 'card clickable'          
+                : 'card active clickable';   
 
             return (
               <div
@@ -143,7 +131,6 @@ const Home = () => {
         )}
       </section>
 
-      {/* 🗓 Календарь-заглушка */}
       <section className="card calendar-placeholder" style={{ textAlign: 'center', background: '#eee' }}>
         <h3>Upcoming Events</h3>
         <CalendarView events={events} />
