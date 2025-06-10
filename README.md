@@ -44,6 +44,39 @@ src/
 
 ---
 
+## 👤 Test Accounts
+
+You can use the following pre-approved accounts to explore the app:
+
+```plaintext
+Admin:
+Email:    admin@bakery.local
+Password: password123
+
+Manager 1:
+Email:    manager1@bakery.local
+Password: user123
+
+Manager 2:
+Email:    manager2@bakery.local
+Password: user123
+
+User 1:
+Email:    user1@bakery.local
+Password: user123
+
+User 2:
+Email:    user2@bakery.local
+Password: user123
+```
+
+---
+
+✅ You can also register a new test user through the app.  
+Managers or the admin can approve them via their account panel.
+
+---
+
 ## ✅ Features Implemented
 
 ### 🔐 Authentication
