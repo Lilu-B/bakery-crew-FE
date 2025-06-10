@@ -51,7 +51,6 @@ console.log('✅ Login success, token:', res.data.token);
   <section aria-labelledby="login-heading">
     <h2 id="login-heading">Login</h2>
     <form onSubmit={handleLogin}>
-      <h2>Login</h2>
       <label htmlFor="email">Email:</label>
       <input
         type="email"
