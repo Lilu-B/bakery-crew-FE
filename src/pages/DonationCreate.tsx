@@ -47,7 +47,7 @@ const DonationCreate = () => {
 
   return (
     <div className="create-donation-page">
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <header className="fixed-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>New Donation</h1>
         <ProfileMenu />
       </header>
@@ -103,7 +103,9 @@ const DonationCreate = () => {
         </div>
       </form>
 
-      <BottomNav />
+      <div className="fixed-footer">
+        <BottomNav />
+      </div>
     </div>
   );
 };

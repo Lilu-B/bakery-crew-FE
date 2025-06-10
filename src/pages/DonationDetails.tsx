@@ -80,7 +80,7 @@ console.log('👉 Получено с сервера:', res.data);
 
   return (
     <main role="main" className="donation-details">
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <header className="fixed-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Bakery Crew Hub</h1>
         <ProfileMenu />
       </header>
@@ -123,7 +123,9 @@ console.log('👉 Получено с сервера:', res.data);
         </div>
       )}
 
-      <BottomNav />
+      <div className="fixed-footer">
+        <BottomNav />
+      </div>
     </main>
   );
 };

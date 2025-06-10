@@ -88,7 +88,7 @@ const EventDetails = () => {
 
   return (
     <div className="event-details">
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <header className="fixed-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Bakery Crew Hub</h1>
         <ProfileMenu />
       </header>
@@ -152,7 +152,9 @@ const EventDetails = () => {
         </ul>
       </section>
 
-      <BottomNav />
+      <div className="fixed-footer">
+        <BottomNav />
+      </div>
     </div>
   );
 };

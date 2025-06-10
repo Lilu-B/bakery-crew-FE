@@ -60,7 +60,7 @@ const Events = () => {
 
   return (
     <div className="events-page" aria-labelledby="events-heading">
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <header className="fixed-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1 id="events-heading">Bakery Crew Hub</h1>
         <ProfileMenu />
       </header>
@@ -112,7 +112,9 @@ const Events = () => {
         </button>
       )}
 
-      <BottomNav />
+      <div className="fixed-footer">
+        <BottomNav />
+      </div>
     </div>
   );
 };

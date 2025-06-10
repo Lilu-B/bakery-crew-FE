@@ -34,8 +34,7 @@ const Home = () => {
         setDonations(donationsData);
         } catch (err) {
             const error = err as AxiosError<{ message?: string }>;
-            const errorMsg = error.response?.data?.message || '❌ Failed to load dashboard data.';
-            console.error('❌ Dashboard error:', errorMsg);
+            const errorMsg = error.response?.data?.message || 'Failed to load dashboard data.';
             alert(errorMsg);
             setEvents([]);
             setDonations([]);
@@ -47,7 +46,7 @@ const Home = () => {
   return (
     <div className="home-container" aria-labelledby="home-heading">
 
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <header className="fixed-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1 id="home-heading">Bakery Crew Hub</h1>
         <ProfileMenu />
       </header>
@@ -133,7 +132,9 @@ const Home = () => {
         <CalendarView events={events} />
       </section>
 
-      <BottomNav />
+      <div className="fixed-footer">
+        <BottomNav />
+      </div>
     </div>
   );
 };

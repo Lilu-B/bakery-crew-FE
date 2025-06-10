@@ -60,7 +60,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   return (
     <div className="create-event-page">
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <header className="fixed-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Bakery Crew Hub</h1>
         <ProfileMenu />
       </header>
@@ -133,7 +133,9 @@ const handleSubmit = async (e: React.FormEvent) => {
         </div>
       </form>
 
-      <BottomNav />
+      <div className="fixed-footer">
+        <BottomNav />
+      </div>
     </div>
   );
 };

@@ -43,6 +43,28 @@ body {
   margin: 0 auto;
 }
 
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  z-index: 1000;
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-gray);
+}
+
+.fixed-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  z-index: 1000;
+  border-top: 1px solid var(--color-gray);
+  padding: 0.5rem 0;
+}
+
 /* Typography */
 h1, h2, h3 {
   font-weight: bold;

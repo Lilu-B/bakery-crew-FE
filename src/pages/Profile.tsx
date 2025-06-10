@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useUser } from '../context/UserContext';
 import api from '../api/axios';
 import { useNavigate } from 'react-router-dom';
+import BottomNav from '../components/BottomNav';
 
 const Profile = () => {
   const { user, setUser, logout } = useUser();
@@ -93,6 +94,9 @@ const Profile = () => {
       <button onClick={handleDelete} aria-label="Delete Account" className="delete-button">
         Delete Account
       </button>
+      <div className="fixed-footer">
+        <BottomNav />
+      </div>
     </div>
   );
 };
