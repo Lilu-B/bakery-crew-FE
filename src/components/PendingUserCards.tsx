@@ -43,7 +43,7 @@ const PendingUserCards = () => {
 
   return (
     <section aria-labelledby="pending-users-heading">
-      <h2 id="pending-users-heading">Pending Users</h2>
+      <h3 id="pending-users-heading">Pending Users</h3>
       {pendingUsers.length === 0 ? (
         <p>No pending users to approve.</p>
       ) : (
