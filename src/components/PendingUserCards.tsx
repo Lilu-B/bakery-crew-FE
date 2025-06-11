@@ -44,23 +44,33 @@ const PendingUserCards = () => {
   return (
     <section aria-labelledby="pending-users-heading">
       <h3 id="pending-users-heading">Pending Users</h3>
+
       {pendingUsers.length === 0 ? (
-        <p>No pending users to approve.</p>
+        <p aria-live="polite" className="error-message">No pending users to approve.</p>
       ) : (
         pendingUsers.map(user => (
-          <div key={user.id} className="card pending">
+          <div key={user.id} className="card">
             <h3>{user.name}</h3>
             <p>Email: {user.email}</p>
             <p>Phone: {user.phone || 'N/A'}</p>
             <p>Shift: {user.shift}</p>
             <p>Role: {user.role}</p>
-            <div style={{ marginTop: '0.5rem' }}>
-                <button onClick={() => handleApprove(user.id)} aria-label="Approve user" className="approve-button">
-                    Approve
-                </button>
-                <button onClick={() => handleDelete(user.id)} aria-label="Delete user" className="delete-button">
-                    Delete
-                </button>
+
+            <div className="button-group">
+              <button
+                onClick={() => handleApprove(user.id)}
+                aria-label="Approve user"
+                className="button-green"
+              >
+                Approve
+              </button>
+              <button
+                onClick={() => handleDelete(user.id)}
+                aria-label="Delete user"
+                className="button-red"
+              >
+                Delete
+              </button>
             </div>
           </div>
         ))

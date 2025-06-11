@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
-import BottomNav from '../components/BottomNav';
-import ProfileMenu from '../components/ProfileMenu';
 import { format } from 'date-fns';
 import api from '../api/axios';
 import type { AxiosError } from 'axios';
@@ -79,22 +77,25 @@ console.log('👉 Получено с сервера:', res.data);
   if (error) return <p aria-live="assertive" style={{ color: 'red' }}>{error}</p>;
 
   return (
-    <main role="main" className="donation-details">
-      <header className="fixed-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Bakery Crew Hub</h1>
-        <ProfileMenu />
-      </header>
+    <div className="main-content" role="main" aria-labelledby="donation-details-heading">
 
+    <section className="card">
       <h2>{donation.title}</h2>
       <p>Deadline: {format(new Date(donation.deadline), 'd MMM yyyy')}</p>
       <p style={{ color: '#666' }}>Created by: {donation.creatorName}</p>
-      <p>{donation.description}</p>
+    </section>
 
+    <section className="card">
+      <h4>Hello team,</h4>
+      <p>{donation.description}</p>
+    </section>
+
+    <section className="card">
       <h3>Total Donated: £{donation.totalCollected}</h3>
       <h4>Donors: {donation.donorCount}</h4>
 
       {user?.role === 'user' && !donation.hasDonated && (
-        <>
+
 
         <div style={{ marginTop: '1rem' }}>
           <label htmlFor="donation-amount">Donation amount (£)</label>
@@ -110,23 +111,21 @@ console.log('👉 Получено с сервера:', res.data);
             Donate
           </button>
         </div>
-        </>
+    
       )}
 
       {donation.hasDonated && (
-        <p aria-live="polite" style={{ color: 'green' }}>Thank you for your donation!</p>
+        <p className="success-message" aria-live="polite" >Thank you for your donation!</p>
       )}
 
       {user?.role !== 'user' && (
         <div style={{ textAlign: 'right', marginTop: '1rem' }}>
-          <button onClick={handleDelete} aria-label="Delete donation" className="delete-button">DELETE</button>
+          <button onClick={handleDelete} aria-label="Delete donation" className="button-red">DELETE</button>
         </div>
       )}
 
-      <div className="fixed-footer">
-        <BottomNav />
-      </div>
-    </main>
+      </section>
+    </div>
   );
 };
 

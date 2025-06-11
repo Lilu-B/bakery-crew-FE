@@ -1,169 +1,189 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 :root {
   --color-accent: #d62828;
-  --color-gray: #ccc;
-  --color-bg: #fff;
+  --color-success: #2a9d69;
+  --color-error: #e63946;
+  --color-border-default: #ccc;
+  --color-bg: #ffffff;
   --color-text: #222;
 
+  --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 16px;
   --space-lg: 24px;
 
   --radius-sm: 4px;
   --radius-md: 8px;
+
   --font-main: 'Arial', sans-serif;
 }
 
-/* Accessible focus outline */
-button:focus,
-input:focus,
-a:focus {
-  outline: 3px solid #47d785;
-  outline-offset: 2px;
+/* === GLOBAL RESET === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.error-message {
-  color: red;
-  margin: 0.5em 0;
-}
-
-/* Layout */
 body {
   font-family: var(--font-main);
   background-color: var(--color-bg);
   color: var(--color-text);
   line-height: 1.5;
-  padding: var(--space-md);
+  padding: 0;
   max-width: 480px;
   margin: 0 auto;
+  text-align: center;
 }
 
+button, input, textarea, select {
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+form label {
+  display: block;
+  text-align: left;
+  margin-bottom: var(--space-sm);
+}
+
+form input {
+  width: 100%;
+  padding: var(--space-sm);
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-md);
+}
+
+input[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0; 
+}
+
+/* === ACCESSIBILITY FOCUS === */
+button:focus,
+a:focus,
+input:focus {
+  outline: 3px solid #47d785;
+  outline-offset: 2px;
+}
+
+/* === LAYOUT STRUCTURE === */
 .fixed-header {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  background: white;
-  z-index: 1000;
-  padding: 1rem;
-  border-bottom: 1px solid var(--color-gray);
+  right: 0;
+  background: #f9f9f9;
+  border-bottom: 3px solid var(--color-border-default);  
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  padding: 10px 25px;
+  padding-top: 12px;
+}
+
+.fixed-header h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.profile-menu-button {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-menu-button:hover {
+  background-color: rgba(72, 72, 72, 0.1);
 }
 
 .fixed-footer {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
-  background: white;
-  z-index: 1000;
-  border-top: 1px solid var(--color-gray);
-  padding: 0.5rem 0;
+  right: 0;
+  background: #f9f9f9;
+  border-top: 3px solid var(--color-border-default);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  padding: 8px 0; 
+  z-index: 100;
 }
 
-/* Typography */
-h1, h2, h3 {
-  font-weight: bold;
-  margin-bottom: var(--space-sm);
-}
-
-p {
-  margin-bottom: var(--space-sm);
-}
-
-/* Global Elements */
-button {
-  padding: var(--space-sm);
+.fixed-footer button {
+  background: none;
   border: none;
-  border-radius: var(--radius-sm);
-  background-color: var(--color-accent);
-  color: white;
+  padding: 8px 12px;
+  font-size: 1.5rem; 
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.approve-button {
-  background: green;
-  color: white;
-  padding: 0.4rem 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.approve-button:hover {
-  background: darkgreen;
-}
-
-.delete-button {
-  background: tomato;
-  color: white;
-  padding: 0.4rem 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-left: 1rem;
-}
-
-.delete-button:hover {
-  background: red;
-}
-
-input {
-  padding: var(--space-sm);
-  border: 1px solid var(--color-gray);
-  border-radius: var(--radius-sm);
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   width: 100%;
-  margin-bottom: var(--space-sm);
 }
 
-select {
-  padding: var(--space-sm);
-  border: 1px solid var(--color-gray);
-  border-radius: var(--radius-sm);
-  width: 100%;
-  margin-bottom: var(--space-sm);
+.main-content {
+  padding: var(--space-md);
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-  white-space: nowrap;
-}
-
-.card.pending {
-  border: 2px solid red;
-}
-
+/* === CARD STYLES === */
 .card {
-  border: 2px solid var(--color-gray);
+  border: 2px solid var(--color-border-default);
   border-radius: var(--radius-md);
   padding: var(--space-md);
   margin-bottom: var(--space-md);
-  background-color: var(--color-bg);
+  background: #f9f9f9;
+  transition: border 0.3s ease;
 }
 
-.active {
-  border-color: var(--color-accent);
+.card.active {
+  border-color: var(--color-success);
+  background: #faffd4;
 }
 
 .card.clickable {
   cursor: pointer;
 }
 
-ul {
-  list-style: none;
-  padding-left: 0;
-  margin-left: 0;
+.card.clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  margin-bottom: var(--space-sm);
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: #444;
 }
 
 .dot {
@@ -175,12 +195,14 @@ ul {
   margin-top: 2px;
 }
 
-.react-calendar__tile {
-  color: #333; 
-}
-
-.react-calendar__tile:disabled {
-  color: #ccc; 
+/* === CALENDAR === */
+.calendar-placeholder {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-md);
+  border: 2px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: #f9f9f9;
 }
 
 .react-calendar__tile--now {
@@ -193,33 +215,73 @@ ul {
   color: white !important;
 }
 
-.weekend {
-  color: #ef2a2a !important; 
-  font-weight: bold;
-}
-
-.react-calendar__navigation {
-  background: transparent;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.react-calendar__navigation button {
-  color: #333 !important;     
-  font-weight: 600;
-  background: none;
+/* === BUTTONS === */
+button {
+  padding: var(--space-sm) var(--space-md);
   border: none;
+  border-radius: var(--radius-sm);
   cursor: pointer;
 }
 
-.react-calendar__navigation__label {
-  color: #333 !important;      
-  font-weight: bold;
-  font-size: 1.1rem;
+.button-green {
+  background-color: var(--color-success);
+  color: white;
 }
 
+.button-green:hover {
+  background-color: rgb(22, 188, 105);
+  color: white;
+}
+
+.button-red {
+  background-color: var(--color-error);
+  color: white;
+}
+
+.button-red:hover {
+  background-color: red;
+  color: white;
+}
+
+.button-neutral {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.button-long {
+  width: 100%;
+  font-size: 1.1rem;
+  padding: var(--space-md) var(--space-lg);
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+/* === MESSAGES === */
+.success-message {
+  color: var(--color-success) !important;
+  margin-bottom: var(--space-sm);
+  font-weight: bold;
+  text-align: center;
+}
+
+.error-message {
+  color: var(--color-error) !important;
+  margin-bottom: var(--space-sm);
+  font-weight: bold;
+  text-align: center;
+}
+
+/* === SECTIONS AND TITLES === */
 section {
   margin-bottom: var(--space-lg);
+}
+
+h1, h2, h3 {
+  font-weight: bold;
+  margin-bottom: var(--space-sm);
 }

@@ -1,4 +1,4 @@
-// Тип данных события (Event)
+
 
 export interface Event {
   id: number;

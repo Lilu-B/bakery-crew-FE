@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useUser } from '../context/UserContext';
 import api from '../api/axios';
 import { useNavigate } from 'react-router-dom';
-import BottomNav from '../components/BottomNav';
 
 const Profile = () => {
   const { user, setUser, logout } = useUser();
@@ -60,27 +59,50 @@ const Profile = () => {
   )}
 
   return (
-    <div className="card">
+  <div className="main-content">
+    <section className="card">
       <h2>Profile Settings</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input name="name" value={form.name} onChange={handleChange} required />
+
+      <form onSubmit={handleSubmit} className="card" style={{ marginTop: '1rem' }}>
+        <label htmlFor="profile-name">
+          <h3>Name:</h3>
+          <input
+            id="profile-name"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
         </label>
 
         {user?.role !== 'developer' && (
-            <>
-            <label>
-            Phone:
-            <input name="phone" value={form.phone} onChange={handleChange} />
+          <>
+            <label htmlFor="profile-phone">
+              <h3>Phone:</h3>
+              <input
+                id="profile-phone"
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+              />
             </label>
-            <label>
-            Shift:
-            <input name="shift" value={form.shift} onChange={handleChange} />
+
+            <label htmlFor="profile-shift">
+              <h3>Shift:</h3>
+              <input
+                id="profile-shift"
+                name="shift"
+                value={form.shift}
+                disabled
+                readOnly
+              />
             </label>
-            </>
+          </>
         )}
-        <button aria-label="Save Profile" type="submit" className="approve-button">Save</button>
+
+        <button type="submit" aria-label="Save Profile" className="button-green">
+          Save
+        </button>
       </form>
 
       {user?.managerId && (
@@ -91,14 +113,16 @@ const Profile = () => {
 
       <hr style={{ margin: '1rem 0' }} />
 
-      <button onClick={handleDelete} aria-label="Delete Account" className="delete-button">
+      <button
+        onClick={handleDelete}
+        aria-label="Delete Account"
+        className="button-red"
+      >
         Delete Account
       </button>
-      <div className="fixed-footer">
-        <BottomNav />
-      </div>
-    </div>
-  );
+    </section>
+  </div>
+);
 };
 
 export default Profile;

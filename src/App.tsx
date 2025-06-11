@@ -1,9 +1,10 @@
-import './App.css'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Navigate - ???
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
+import ProtectedRoute from './routes/ProtectedRoute';
+import Layout from './components/Layout';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Profile from './pages/Profile';
 import Home from './pages/Home';
+import Profile from './pages/Profile';
 import Events from './pages/Events';
 import EventDetails from './pages/EventDetails';
 import EventCreate from './pages/EventCreate';
@@ -11,7 +12,6 @@ import Donations from './pages/Donations';
 import DonationDetails from './pages/DonationDetails';
 import DonationCreate from './pages/DonationCreate';
 // import Messages from './pages/Messages';
-import ProtectedRoute from './routes/ProtectedRoute';
 
 const App = () => {
   return (
@@ -20,16 +20,17 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-        <Route path="/events" element={<ProtectedRoute><Events /></ProtectedRoute>} />
-        <Route path="/events/:eventId" element={<ProtectedRoute><EventDetails /></ProtectedRoute>} />
-        <Route path="/events/create" element={<ProtectedRoute><EventCreate /></ProtectedRoute>} />
-
-        <Route path="/donations" element={<ProtectedRoute><Donations /></ProtectedRoute>} />
-        <Route path="/donations/:donationId" element={<ProtectedRoute><DonationDetails /></ProtectedRoute>} />
-        <Route path="/donations/create" element={<ProtectedRoute><DonationCreate /></ProtectedRoute>} />
-        {/* <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} /> */}
+        <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/events/create" element={<EventCreate />} />
+          <Route path="/events/:eventId" element={<EventDetails />} />
+          <Route path="/donations" element={<Donations />} />
+          <Route path="/donations/create" element={<DonationCreate />} />
+          <Route path="/donations/:donationId" element={<DonationDetails />} />
+      {/* <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} /> */}
+        </Route>
       </Routes>
     </Router>
   );

@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { fetchEvents } from '../api/events';
-import BottomNav from '../components/BottomNav';
-import ProfileMenu from '../components/ProfileMenu';
-import { format } from 'date-fns';
+import EventCardList from '../components/EventCardList';
 import type { AxiosError } from 'axios';
 import type { Event } from '../types/event';
 
@@ -45,7 +43,7 @@ const Events = () => {
         setEvents(sorted);
       } catch (err) {
         const error = err as AxiosError<{ message?: string }>;
-        alert(error.response?.data?.message || '❌ Failed to load events');
+        alert(error.response?.data?.message || 'Failed to load events');
         setEvents([]);
       } finally {
         setLoadingEvents(false);
@@ -59,62 +57,55 @@ const Events = () => {
   if (!user) return <p>User not found</p>;
 
   return (
-    <div className="events-page" aria-labelledby="events-heading">
-      <header className="fixed-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 id="events-heading">Bakery Crew Hub</h1>
-        <ProfileMenu />
-      </header>
+    <div className="main-content" aria-labelledby="events-heading">
+      <section >
+        <h2>All available Overtimes</h2>
+      </section>
 
-      {events.length === 0 ? (
-        <p aria-live="polite">No available events</p>
-      ) : (
-        events.map((event: Event) => {
-          const cardClass =
-            event.applied === false ? 'card active clickable' : 'card clickable';
+      <section>
+        {events.length === 0 ? (
+          <p aria-live="polite">No available events</p>
+        ) : (
+          <EventCardList events={events} />
 
-          return (
-            <div
-              key={event.id}
-              className={cardClass}
-              onClick={() => navigate(`/events/${event.id}`)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  navigate(`/events/${event.id}`);
-                }
-              }}
-              aria-label={`Event: ${event.title}, ${event.shift} shift, ${format(new Date(event.date), 'd MMM yyyy')}`}
-            >
-              <h3>{event.title}</h3>
-              <p>{format(new Date(event.date), 'd MMM yyyy')} — {event.shift} Shift</p>
-              <p style={{ fontSize: '0.85rem', color: '#666' }}>
-                Created by: {event.creatorName}
-              </p>
-            </div>
-          );
-        })
-      )}
+          // events.map((event: Event) => {
+          //   const cardClass =
+          //     event.applied === false ? 'card active clickable' : 'card clickable';
+
+          //   return (
+          //     <div
+          //       key={event.id}
+          //       className={cardClass}
+          //       onClick={() => navigate(`/events/${event.id}`)}
+          //       role="button"
+          //       tabIndex={0}
+          //       onKeyDown={(e) => {
+          //         if (e.key === 'Enter' || e.key === ' ') {
+          //           navigate(`/events/${event.id}`);
+          //         }
+          //       }}
+          //       aria-label={`Event: ${event.title}, ${event.shift} shift, ${format(new Date(event.date), 'd MMM yyyy')}`}
+          //     >
+          //       <h3>{event.title}</h3>
+          //       <p>{format(new Date(event.date), 'd MMM yyyy')} — {event.shift} Shift</p>
+          //       <p style={{ fontSize: '0.85rem', color: '#666' }}>
+          //         Created by: {event.creatorName}
+          //       </p>
+          //     </div>
+          //   );
+          // })
+        )}
+      </section>
 
       {user.role !== 'user' && (
         <button
           onClick={() => navigate('/events/create')}
           aria-label="Create an offer"
-          style={{
-            marginTop: '1rem',
-            background: '#green',
-            padding: '1rem',
-            borderRadius: '8px',
-            width: '100%',
-          }}
+          className='button-green button-long'
         >
           Create an offer
         </button>
       )}
-
-      <div className="fixed-footer">
-        <BottomNav />
-      </div>
     </div>
   );
 };

@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchEventById, applyToEvent, deleteEvent } from '../api/events';
 import { useUser } from '../context/UserContext';
-import BottomNav from '../components/BottomNav';
-import ProfileMenu from '../components/ProfileMenu';
 import AddToGoogleCalendar from '../components/AddToGoogleCalendar';
 import { format } from 'date-fns';
 import type { Event } from '../types/event';
@@ -87,11 +85,7 @@ const EventDetails = () => {
   if (loading || !event) return <p>Loading...</p>;
 
   return (
-    <div className="event-details">
-      <header className="fixed-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Bakery Crew Hub</h1>
-        <ProfileMenu />
-      </header>
+    <div className="main-content" role="main" aria-labelledby="event-details-heading">
 
         {error && (
         <div
@@ -103,15 +97,28 @@ const EventDetails = () => {
         </div>
         )}
 
+    <section className="card">
       <h2>{event.title}</h2>
       <p>
         <strong>{format(new Date(event.date), 'EEEE')}</strong> — {event.shift} Shift
       </p>
 
       {user?.role === 'user' && !submitted && (
-        <div style={{ display: 'flex', gap: '1rem', margin: '1rem 0' }}>
-          <button onClick={handleApply} style={{ background: 'green' }} aria-label="Apply for event">Apply</button>
-          <button onClick={handleNotNow} style={{ background: 'tomato' }} aria-label="Not Now">Not Now</button>
+        <div className="button-group">
+          <button
+            onClick={handleApply}
+            aria-label="Apply for event"
+            className="button-green"
+          >
+            Apply
+          </button>
+          <button
+            onClick={handleNotNow}
+            aria-label="Not Now"
+            className="button-red"
+          >
+            Not Now
+          </button>
         </div>
       )}
 
@@ -130,13 +137,14 @@ const EventDetails = () => {
 
       {user?.role !== 'user' && (
         <div style={{ textAlign: 'right' }}>
-          <button onClick={handleDelete} aria-label="Delete event" className="delete-button">
+          <button onClick={handleDelete} aria-label="Delete event" className="button-red">
             DELETE
           </button>
         </div>
       )}
+      </section>
 
-      <section style={{ marginTop: '2rem' }}>
+      <section className="card" style={{ marginTop: '2rem' }}> 
         <p><strong>Hi everyone,</strong></p>
         <p>{event.description || 'No description provided.'}</p>
       </section>
@@ -151,10 +159,6 @@ const EventDetails = () => {
           )}
         </ul>
       </section>
-
-      <div className="fixed-footer">
-        <BottomNav />
-      </div>
     </div>
   );
 };

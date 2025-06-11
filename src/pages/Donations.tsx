@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { fetchActiveDonations } from '../api/donations';
-import BottomNav from '../components/BottomNav';
-import ProfileMenu from '../components/ProfileMenu';
-import { format } from 'date-fns';
+import DonationCardList from '../components/DonationCardList';
 import type { AxiosError } from 'axios';
 import type { Donation } from '../types/donation';
 
@@ -35,63 +33,57 @@ const Donations = () => {
   if (!user) return <p>User not found</p>;
 
   return (
-    <div className="donations-page">
-      <header className="fixed-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Bakery Crew Hub</h1>
-        <ProfileMenu />
-      </header>
+    <div className="main-content" aria-labelledby="donations-heading">
+      <section >
+        <h2>Community Support</h2>
+      </section>
 
+      <section>
       
       {donations.length === 0 ? (
         <p>No active donations</p>
       ) : (
-        donations.map((donation) => {
-          const cardClass =
-            donation.hasDonated === false ? 'card active clickable' : 'card clickable';
+        <DonationCardList donations={donations} />
 
-          return (
-            <div
-              key={donation.id}
-              className={cardClass}
-              onClick={() => navigate(`/donations/${donation.id}`)}
-              role="button"
-              tabIndex={0}
-              aria-label={`View donation ${donation.title}`}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  navigate(`/donations/${donation.id}`);
-                }
-              }}
-            >
-              <h3>{donation.title}</h3>
-              <p>Deadline: {format(new Date(donation.deadline), 'd MMM yyyy')}</p>
-              <p style={{ fontSize: '0.85rem', color: '#666' }}>
-                Created by: {donation.creatorName}
-              </p>
-            </div>
-          );
-        })
+      //   donations.map((donation) => {
+      //     const cardClass =
+      //       donation.hasDonated === false ? 'card active clickable' : 'card clickable';
+
+      //     return (
+      //       <div
+      //         key={donation.id}
+      //         className={cardClass}
+      //         onClick={() => navigate(`/donations/${donation.id}`)}
+      //         role="button"
+      //         tabIndex={0}
+      //         aria-label={`View donation ${donation.title}`}
+      //         onKeyDown={(e) => {
+      //           if (e.key === 'Enter' || e.key === ' ') {
+      //             navigate(`/donations/${donation.id}`);
+      //           }
+      //         }}
+      //       >
+      //         <h3>{donation.title}</h3>
+      //         <p>Deadline: {format(new Date(donation.deadline), 'd MMM yyyy')}</p>
+      //         <p style={{ fontSize: '0.85rem', color: '#666' }}>
+      //           Created by: {donation.creatorName}
+      //         </p>
+      //       </div>
+      //     );
+      //   })
+      // )}
       )}
+      </section>
 
       {user.role !== 'user' && (
         <button
           onClick={() => navigate('/donations/create')}
           aria-label='Create new donation'
-          style={{
-            marginTop: '1rem',
-            background: '#green',
-            padding: '1rem',
-            borderRadius: '8px',
-            width: '100%',
-          }}
+          className='button-green button-long'
         >
           Create Donation
         </button>
-      )}
-
-      <div className="fixed-footer">
-        <BottomNav />
-      </div>
+      )}     
     </div>
   );
 };

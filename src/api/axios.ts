@@ -2,6 +2,8 @@ import axios from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 
 const api = axios.create({
+  // baseURL: '/api',   // for local run!
+  // withCredentials: true
   baseURL: 'https://bakery-crew-be.onrender.com/api'
 });
 

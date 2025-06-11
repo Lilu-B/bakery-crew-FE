@@ -13,15 +13,9 @@ const BottomNav = () => {
 
   return (
     <nav 
+      className="bottom-nav"
       role="navigation" 
       aria-label="Bottom navigation"
-      style={{
-        display: 'flex',
-        justifyContent: 'space-around',
-        marginTop: '2rem',
-        borderTop: '1px solid var(--color-gray)',
-        paddingTop: '1rem'
-      }}
     >
       {navItems.map((item) => (
         <button
@@ -29,10 +23,7 @@ const BottomNav = () => {
           onClick={() => navigate(item.path)}
           aria-label={item.ariaLabel} 
           style={{
-            fontSize: '1.5rem',
-            background: location.pathname === item.path ? '#eee' : 'transparent',
-            border: 'none',
-            cursor: 'pointer'
+            background: location.pathname === item.path ? '#eee' : 'transparent'
           }}
         >
           {item.label}

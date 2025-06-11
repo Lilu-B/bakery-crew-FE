@@ -41,7 +41,7 @@ const CalendarView = ({ events }: CalendarViewProps) => {
   };
 
   return (
-    <div className="calendar-section">
+    <div>
       <h2 style={{ marginBottom: '1rem' }}>Your Event Calendar</h2>
       <Calendar
         aria-label="Event calendar" 
@@ -59,7 +59,7 @@ const CalendarView = ({ events }: CalendarViewProps) => {
       />
 
       {selectedDate && (
-        <div className="selected-date-info" aria-live="polite" style={{ marginTop: '1rem' }}>
+        <div aria-live="polite" aria-atomic="true" style={{ marginTop: '1rem'}}>
           <h3>Events on {format(selectedDate, 'd MMM yyyy')}</h3>
           {filteredEvents.length > 0 ? (
             <ul>

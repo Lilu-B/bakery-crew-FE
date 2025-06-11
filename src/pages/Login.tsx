@@ -45,39 +45,53 @@ console.log('✅ Login success, token:', res.data.token);
   }, [user, loginInProgress, navigate]);
 
   return (
-  <section aria-labelledby="login-heading">
-    <h2 id="login-heading">Login</h2>
-    <form onSubmit={handleLogin}>
-      <label htmlFor="email">Email:</label>
-      <input
-        type="email"
-        id="email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        required
-      />
-      <label htmlFor="password">Password:</label>
-      <input
-        type="password"
-        id="password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        required
-      />
-      {errorMessage && (
-        <p aria-live="assertive" style={{ color: 'red', marginBottom: '1rem' }}>
-          {errorMessage}
+  <div className="main-content">
+    <section className="card" aria-labelledby="login-heading">
+      <h2 id="login-heading">Login</h2>
+
+      <form onSubmit={handleLogin} style={{ marginTop: '1rem' }}>
+        <label htmlFor="email">
+          <h3>Email:</h3>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+          />
+        </label>
+
+        <label htmlFor="password">
+          <h3>Password:</h3>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+          />
+        </label>
+
+        {errorMessage && (
+          <p className="error-message" aria-live="assertive">{errorMessage}</p>
+        )}
+
+        <button
+          type="submit"
+          aria-label="Login"
+          className="button-green"
+          disabled={loginInProgress}
+        >
+          {loginInProgress ? 'Logging in...' : 'Login'}
+        </button>
+
+        <p style={{ marginTop: '1rem' }}>
+          Don't have an account? <Link to="/register">Register</Link>
         </p>
-      )}
-      <button type="submit" aria-label="Login" className="approve-button" disabled={loginInProgress}>
-        {loginInProgress ? 'Logging in...' : 'Login'}
-      </button>
-      <p style={{ marginTop: '1rem' }}>
-        Don't have an account? <Link to="/register">Register</Link>
-      </p>
-    </form>
-  </section>
-  );
+      </form>
+    </section>
+  </div>
+);
 };
 
 export default Login;
