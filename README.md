@@ -1,11 +1,13 @@
 # 🧁 Bakery Crew Hub — Frontend
 
-A mobile-friendly web app for a bakery team.  
-Team members can view their shift, apply for overtime, contribute to donations, send messages, and see upcoming events.
+A mobile-friendly web app for a private bakery team network, built in response to a community event management brief. This internal platform allows team members to view and apply for overtime events, contribute to holiday donations, and sync events with their Google Calendar.
+Currently, communication is one-way: managers can create and broadcast events and donation campaigns to their assigned shift. While users cannot directly message managers yet, two-way messaging is planned as a future feature.
+
+While the original brief focused on an open community, Bakery Crew Hub adapts this concept into a secure, role-based system for managing a real-life team’s workflow and participation in internal events.
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 - Vite + React + TypeScript
 - Clean CSS (no Tailwind, Bootstrap, or other frameworks)
@@ -16,7 +18,7 @@ Team members can view their shift, apply for overtime, contribute to donations, 
 
 ---
 
-## 📦 Installed Dependencies
+## Installed Dependencies
 
 ```bash
 npm install axios react-router-dom classnames
@@ -27,7 +29,7 @@ npm install camelcase-keys
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
@@ -44,7 +46,7 @@ src/
 
 ---
 
-## 👤 Test Accounts
+## Test Accounts
 
 You can use the following pre-approved accounts to explore the app:
 
@@ -72,14 +74,14 @@ Password: user123
 
 ---
 
-✅ You can also register a new test user through the app.  
+You can also register a new test user through the app.  
 Managers or the admin can approve them via their account panel.
 
 ---
 
-## ✅ Features Implemented
+## Features Implemented
 
-### 🔐 Authentication
+### Authentication
 - JWT stored in `sessionStorage`
 - Token auto-attached via Axios interceptor (configured in `api/axios.ts`)
 - Auto-login attempt on refresh
@@ -92,7 +94,7 @@ Managers or the admin can approve them via their account panel.
 - Logout via ProfileMenu
 - User profile patch & delete available
 
-### 👤 User Flow
+### User Flow
 - Register with shift → auto-assigned manager
 - Login with persistent session
 - Protected routes via `ProtectedRoute.tsx`
@@ -102,7 +104,7 @@ Managers or the admin can approve them via their account panel.
 - Assigned manager is auto-set based on shift
 - Edit profile page with update & delete options
 
-### 🏠 Home Page
+### Home Page
 - Shows user role & shift
 - Dynamic event and donation previews
 - Safe rendering with `Array.isArray()` checks
@@ -114,14 +116,14 @@ Managers or the admin can approve them via their account panel.
 - Fully styled mobile-friendly layout
 - Dynamic bottom navigation bar
 
-### 📱 Navigation
+### Navigation
 - BottomNav component with four routes:
   - `/` — Home
   - `/events` — Overtime event list (in progress)
   - `/donations` — Active donations (in progress)
   - `/messages` — Messaging (in progress)
 
-### 🔗 Google Calendar Export
+### Google Calendar Export
 
 - After applying to an event, users can click **"Add to Google Calendar"**
 - Opens Google Calendar pre-filled with:
@@ -134,7 +136,7 @@ Managers or the admin can approve them via their account panel.
   - Inside `EventDetails.tsx`
   - Under calendar event list (optional)
 
-### 📅 Calendar Integration
+### Calendar Integration
 
 - React Calendar (`react-calendar`) shows user's upcoming applied events
 - Visual dots mark dates with relevant events
@@ -147,7 +149,7 @@ Managers or the admin can approve them via their account panel.
 - Navigation buttons and month label styled manually for accessibility
 - Upcoming event list appears under selected date
 
-### 🗕 Events Feature
+### Events Feature
 - `/events` displays only **active** events
 - `/events/:eventId` shows full event info
 - Role-based logic:
@@ -166,7 +168,7 @@ Managers or the admin can approve them via their account panel.
   - Gray if user applied
   - Red if not applied
 
-### 🎁 Donations Feature
+### Donations Feature
 
 - `/donations` — displays all **active** donation campaigns
 - `/donations/:donationId` — shows full donation details:
@@ -183,7 +185,7 @@ Managers or the admin can approve them via their account panel.
 - Users can donate **only once per donation**
 - All data is processed through `camelcase-keys` interceptor and Axios
 
-### 🎫 User Management Feature
+### User Management Feature
 
 - Unapproved users are now handled by managers and developers
 - Backend route: `GET /api/admin/users/pending` returns all unapproved users
@@ -191,11 +193,11 @@ Managers or the admin can approve them via their account panel.
 - Developers see all pending users
 - Each pending user card displays:
   - Name, Email, Shift, Role, Phone
-  - “Approve” (✅ PATCH `/api/admin/users/:id/approve`)
-  - “Delete” (🗑 DELETE `/api/users/:id`)
+  - “Approve” (PATCH `/api/admin/users/:id/approve`)
+  - “Delete” (DELETE `/api/users/:id`)
 - Styled red border to highlight pending users (`.card.pending`)
 
-### 🧑‍🦯 Accessibility (A11y) Improvements
+### Accessibility (A11y) Improvements
 
 The project now supports better accessibility for users with screen readers or other assistive technologies.
 
@@ -210,9 +212,9 @@ The project now supports better accessibility for users with screen readers or o
 
 ---
 
-## 🔁 Data Normalization
+## Data Normalization
 
-### ✅ Now handled globally via Axios interceptor:
+### Now handled globally via Axios interceptor:
 
 ```ts
 // api/axios.ts
@@ -235,7 +237,7 @@ npm install camelcase-keys
 
 ---
 
-## 🧪 How to Run Locally
+## How to Run Locally
 
 ```bash
 # 1. Clone the repository
@@ -250,27 +252,27 @@ npm run dev
 ```
 
 App runs at:  
-📱 http://localhost:5173
+http://localhost:5173
 
 ---
 
-## 🔐 Authentication
+## Authentication
 
-- ✅ JWT token is saved to `sessionStorage` on login
-- 🔐 Axios interceptor (in `api/axios.ts`) automatically attaches the token
-- 🔁 `UserContext.tsx` attempts auto-auth on refresh using `/api/protected`
-- 🧠 Normalized user profile is saved to context
-- 🔁 On page refresh, auto-login is attempted if token exists
-- 🔒 Errors (e.g. expired session) are caught with `AxiosError` and shown via `alert`
-- 🔐 Manual logout clears token and resets context
+- JWT token is saved to `sessionStorage` on login
+- Axios interceptor (in `api/axios.ts`) automatically attaches the token
+- `UserContext.tsx` attempts auto-auth on refresh using `/api/protected`
+- Normalized user profile is saved to context
+- On page refresh, auto-login is attempted if token exists
+- Errors (e.g. expired session) are caught with `AxiosError` and shown via `alert`
+- Manual logout clears token and resets context
 - User profile updated via PATCH `/api/users/me`
 
 ---
 
-## 🔗 Backend Integration
+## Backend Integration
 
 Connected to:  
-🔗 https://github.com/Lilu-B/bakery-crew-BE
+https://github.com/Lilu-B/bakery-crew-BE
 
 - Axios uses `/api` with proxy to `localhost:3001`
 - Tested endpoints:
@@ -295,29 +297,29 @@ Connected to:
 
 ---
 
-## 🛠️ Work Done So Far
+## Work Done So Far
 
-- ✅ Project initialized with `Vite + React + TypeScript`
-- 📁 Clean, modular folder structure established
-- 🔐 Full JWT authentication:
+- Project initialized with `Vite + React + TypeScript`
+- Clean, modular folder structure established
+- Full JWT authentication:
   - `axios.ts` configured with interceptor for token + camelCase normalization
   - Token persisted in `sessionStorage` and auto-attached via Axios
   - Auto-login on refresh via `/api/protected` in `UserContext.tsx`
   - Logout resets auth context
-- ⚙️ `vite.config.ts` set with proxy for `/api` to `localhost:3001`
-- 🔤 `camelcase-keys` installed for response normalization from backend
-- 🧠 `UserContext.tsx` handles auth state globally
-- 🔒 `ProtectedRoute.tsx` used for route guarding
-- 👥 Login, Register, and Profile pages fully functional with:
+- ⚙`vite.config.ts` set with proxy for `/api` to `localhost:3001`
+- `camelcase-keys` installed for response normalization from backend
+- `UserContext.tsx` handles auth state globally
+- `ProtectedRoute.tsx` used for route guarding
+- Login, Register, and Profile pages fully functional with:
   - Error handling via `AxiosError`
   - Shift-based registration
   - Auto-assignment of manager during signup
   - Profile edit & delete support
-- 🏠 Home page:
+- Home page:
   - Displays role, shift, upcoming events and donations
   - Role-based event filtering (manager sees own shift only)
   - Placeholder for Google Calendar sync
-- 📅 Events feature fully implemented:
+- Events feature fully implemented:
   - `/events` page shows all **active** events
   - Events filtered based on role (user/manager/developer)
   - `EventDetails` page:
@@ -329,29 +331,29 @@ Connected to:
     - Validates fields before submission
     - Manager can create only for their shift (enforced front & back)
     - Developer can create for any shift
-- 💰 Active donations:
+- Active donations:
   - `/donations` page integrated (view only for now)
   - Styled consistently with events
-- 🧪 Robust error handling and fallback UI:
+- Robust error handling and fallback UI:
   - Try/catch in all fetchers
   - Alerts shown on failure
   - Empty array fallback for lists
-- 🧼 Cleaned up interfaces and types:
+- Cleaned up interfaces and types:
   - Centralized in `src/types/`
   - Events, Users, Donations typed strictly
-- 🛠️ GitHub commits structured by feature for clarity
-- 📆 CalendarView component implemented with:
+- GitHub commits structured by feature for clarity
+- CalendarView component implemented with:
   - Role-based filtering (applied-only for users)
   - Dot markers for events
   - Date selection state and event list per day
-- 📤 Google Calendar export button added post-application (event details only)
-- 🖌️ Styled weekends, current day, selected day, and header for readability
-- ♿ Improved accessibility: visible date text, proper hover/focus states
-- 📄 README maintained and expanded at each stage
+- Google Calendar export button added post-application (event details only)
+- Styled weekends, current day, selected day, and header for readability
+- Improved accessibility: visible date text, proper hover/focus states
+- README maintained and expanded at each stage
 
 ---
 
-## 🛠️ Recent Improvements
+## Recent Improvements
 
 - Axios interceptor now includes both token and camelCase handling
 - Response types are centralized in `src/types/` (`Event`, `User`, `Donation`)
@@ -366,7 +368,7 @@ Connected to:
 
 ---
 
-## 📌 Upcoming Features
+## Upcoming Features
 
 - Messages inbox & replies (feature UI hidden for now, planned soon)
 - Donation confirmation & payment flow - Stripe integration for real donation
@@ -374,7 +376,7 @@ Connected to:
 
 ---
 
-## 🔗 Backend
+## Backend
 
 This project connects to the backend repository:  
 https://github.com/Lilu-B/bakery-crew-BE
