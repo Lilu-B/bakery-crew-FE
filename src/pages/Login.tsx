@@ -4,6 +4,7 @@ import api from '../api/axios';
 import type { AxiosError } from 'axios';
 import { useUser } from '../context/UserContext';
 import type { User } from '../context/UserContext';
+import RedirectNotice from '../components/RedirectNotice';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ function Login() {
   const navigate = useNavigate();
   const [loginInProgress, setLoginInProgress] = useState(false); 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loginInProgress) {
@@ -21,9 +23,9 @@ function Login() {
     setLoginInProgress(true); 
 
     try {
-console.log('🔐 Login handler triggered');
+      console.log('🔐 Login handler triggered');
       const res = await api.post('/login', { email, password });
-console.log('✅ Login success, token:', res.data.token);
+      console.log('✅ Login success, token:', res.data.token);
 
       sessionStorage.setItem('token', res.data.token); 
       const profile = await api.get('/protected');   
@@ -44,54 +46,7 @@ console.log('✅ Login success, token:', res.data.token);
     }
   }, [user, loginInProgress, navigate]);
 
-  return (
-  <div className="main-content">
-    <section className="card" aria-labelledby="login-heading">
-      <h2 id="login-heading">Login</h2>
-
-      <form onSubmit={handleLogin} style={{ marginTop: '1rem' }}>
-        <label htmlFor="email">
-          <h3>Email:</h3>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
-          />
-        </label>
-
-        <label htmlFor="password">
-          <h3>Password:</h3>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-          />
-        </label>
-
-        {errorMessage && (
-          <p className="error-message" aria-live="assertive">{errorMessage}</p>
-        )}
-
-        <button
-          type="submit"
-          aria-label="Login"
-          className="button-green"
-          disabled={loginInProgress}
-        >
-          {loginInProgress ? 'Logging in...' : 'Login'}
-        </button>
-
-        <p style={{ marginTop: '1rem' }}>
-          Don't have an account? <Link to="/register">Register</Link>
-        </p>
-      </form>
-    </section>
-  </div>
-);
-};
+  return <RedirectNotice />;
+}
 
 export default Login;
